@@ -7,8 +7,8 @@ A little tool to init nix and direnv environment, inspired by some nixify preced
 ```
 > git clone https://github.com/mnacamura/nixify.git $SOMEWHERE
 > ln -s $SOMEWHERE/nixify-overlay.nix ~/.config/nixpkgs/overlays/ 
-> nix-env -f '<nixpkgs>' -i nixify           # for the latest release, or
-> nix-env -f '<nixpkgs>' -i nixify-unstable  # for the latest unstable version
+> nix-env -f '<nixpkgs>' -iA nixify           # for the latest release, or
+> nix-env -f '<nixpkgs>' -iA nixify-unstable  # for the latest unstable version
 ```
 
 ## Usage
