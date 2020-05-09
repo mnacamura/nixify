@@ -132,11 +132,17 @@ function add_envrc
 end
 
 function add_nix_file -a name template
-    msg "editing $name"
-    if test ! -e $name
-        echo -n $template > $name
+    if test -e $name
+        set -l bk '~'
+        while test -e $name$bk
+            set bk $bk$bk
+        end
+        warn "File $name exists. Rename it as $name$bk"
+        mv $name $name$bk
     end
-    edit $name
+
+    echo -n $template > $name
+    msg "added $name"
 end
 
 function add_gitignore
