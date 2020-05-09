@@ -18,4 +18,12 @@ stdenvNoCC.mkDerivation rec {
     install -D $src/nixify.fish $out/bin/nixify
     wrapProgram $out/bin/nixify --prefix PATH : "${makeBinPath buildInputs}"
   '';
+
+  meta = with stdenvNoCC.lib; {
+    description = "A little tool to init nix and direnv environment";
+    homepage = "https://github.com/mnacamura/nixify/";
+    license = licenses.mit;
+    maintainers = with maintainers; [ mnacamura ];
+    platforms = platforms.all;
+  };
 }
