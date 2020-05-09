@@ -15,6 +15,34 @@ function err
     exit 1
 end
 
+function find_git_root
+    if not command -q git
+        return 1
+    end
+
+    set -l path (command git rev-parse --absolute-git-dir 2> /dev/null)
+    if test $status -eq 0
+        string replace --regex '/\.git$' '' $path
+    else
+        return 1
+    end
+end
+
+function cd_project_root
+    set -l project_root
+    set -l git_root (find_git_root 2> /dev/null)
+    if test $status -eq 0
+        msg "guess git repo root $git_root is the project root"
+        set project_root $git_root
+    else
+        msg "guess current directory is the project root"
+        set project_root $PWD
+    end
+
+    msg "change working directory to $project_root"
+    cd $project_root
+end
+
 function edit
     if test -n "$EDITOR"
         eval $EDITOR $argv
@@ -100,6 +128,7 @@ mkShell {
 }
 "
 
+cd_project_root
 add_envrc
 add_nix_file pkg.nix $pkg_nix_template
 add_nix_file default.nix $default_nix_template
