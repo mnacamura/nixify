@@ -1,4 +1,4 @@
-{ stdenvNoCC, fish }:
+{ stdenvNoCC, fish, coreutils }:
 
 let
   inherit (stdenvNoCC.lib) makeBinPath;
@@ -10,7 +10,7 @@ stdenvNoCC.mkDerivation {
 
   src = ./.;
 
-  buildInputs = [ fish ];
+  buildInputs = [ fish coreutils ];
 
   buildCommand = ''
     install -D $src/nixify.fish $out/bin/nixify

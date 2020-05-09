@@ -57,14 +57,31 @@ function prefetch_nixpkgs -a rev
         warn "nix-prefetch-url not found"
         return 1
     end
+    if not command -q tee
+    or not command -q cat 
+    or not command -q mktemp
+        warn "tee, cat, and/or mktemp not found. You need coreutils installed."
+        return 1
+    end
+
+    set -g sha256_memo (mktemp --suffix $program_name)
+    function __prefetch_cleanup --on-event PF_CLEANUP
+        rm -f $sha256_memo
+        set -e sha256_memo
+        functions -e __prefetch_cleanup
+    end
 
     msg "prefetching nixpkgs rev $rev..."
     set -l url "https://github.com/NixOS/nixpkgs/archive/$rev.tar.gz"
-    set -g sha256 (command nix-prefetch-url --type sha256 --unpack $url 2> /dev/null)
+    command nix-prefetch-url --type sha256 --unpack $url | \
+       command tee $sha256_memo 1> /dev/null
     if test ! $status -eq 0
         warn "...failed"
+        emit PF_CLEANUP
         return 1
     end
+    set -g sha256 (command cat $sha256_memo)
+    emit PF_CLEANUP
     msg "...done! sha256 is $sha256"
 end
 
