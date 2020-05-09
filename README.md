@@ -22,7 +22,7 @@ Options:
     -h, --help               show help
     -V                       show program version
     -r, --rev=REV            pin nixpkgs to revision hash REV
-        --sha256=SHA256      sha256 hash of the revision when pinning nixpkgs
+        --sha256=SHA256      sha256 checksum of the pinned nixpkgs (optional)
 ```
 
 ## Example 
