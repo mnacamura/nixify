@@ -35,7 +35,6 @@ function add_envrc
     if test ! -e .envrc
         echo "use nix" > .envrc
         msg "added .envrc"
-        direnv_allow
     else if not string match 'use nix' < .envrc &> /dev/null
         echo "use nix" >> .envrc
         msg "appended 'use nix' to .envrc"
@@ -106,5 +105,6 @@ add_nix_file pkg.nix $pkg_nix_template
 add_nix_file default.nix $default_nix_template
 add_nix_file shell.nix $shell_nix_template
 add_gitignore
+direnv_allow
 
 # vim: fdm=expr
