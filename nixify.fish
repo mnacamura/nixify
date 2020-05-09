@@ -42,15 +42,15 @@ if set -q _flag_V
 end
 
 function msg
-    echo $program_name: $argv >&2 
+    echo $program_name: $argv >&2
 end
 
 function warn
-    echo $program_name: (set_color yellow)$argv(set_color normal) >&2 
+    echo $program_name: (set_color yellow)$argv(set_color normal) >&2
 end
 
 function err
-    echo $program_name: (set_color red)$argv(set_color red) >&2 
+    echo $program_name: (set_color red)$argv(set_color red) >&2
     exit 1
 end
 
@@ -60,7 +60,7 @@ function prefetch_nixpkgs -a rev
         return 1
     end
     if not command -q tee
-    or not command -q cat 
+    or not command -q cat
     or not command -q mktemp
         warn "tee, cat, and/or mktemp not found. You need coreutils installed."
         return 1
