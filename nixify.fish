@@ -139,7 +139,7 @@ function add_nix_file -a name template
         while test -e $name$bk
             set bk $bk$bk
         end
-        warn "$name exists; rename it as $name$bk"
+        warn "$name exists; rename it to $name$bk"
         mv $name $name$bk
     end
 
