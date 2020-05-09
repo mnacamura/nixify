@@ -104,14 +104,6 @@ function edit
     end
 end
 
-function direnv_allow
-    if command -q direnv
-        command direnv allow
-    else
-        warn "direnv not found; skip executing 'direnv allow'"
-    end
-end
-
 function add_envrc
     if test ! -e .envrc
         echo "use nix" > .envrc
@@ -146,6 +138,14 @@ function add_gitignore
             echo \n$ignored_files >> .gitignore
             msg "appended lines to .gitignore"
         end
+    end
+end
+
+function direnv_allow
+    if command -q direnv
+        command direnv allow
+    else
+        warn "direnv not found; skip executing 'direnv allow'"
     end
 end
 
