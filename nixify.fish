@@ -62,7 +62,7 @@ function prefetch_nixpkgs -a rev
     if not command -q tee
     or not command -q cat
     or not command -q mktemp
-        warn "tee, cat, and/or mktemp not found. You need coreutils installed."
+        warn "tee, cat, and/or mktemp not found; you need coreutils installed"
         return 1
     end
 
@@ -119,7 +119,7 @@ function edit
     if test -n "$EDITOR"
         eval $EDITOR $argv
     else
-        warn "Please set EDITOR environment variable to edit nix files."
+        warn "please set EDITOR environment variable to edit nix files"
     end
 end
 
@@ -139,7 +139,7 @@ function add_nix_file -a name template
         while test -e $name$bk
             set bk $bk$bk
         end
-        warn "File $name exists. Rename it as $name$bk"
+        warn "$name exists; rename it as $name$bk"
         mv $name $name$bk
     end
 
