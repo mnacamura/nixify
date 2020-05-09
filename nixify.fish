@@ -131,6 +131,10 @@ function add_nix_file -a name template
 end
 
 function add_gitignore
+    if not find_git_root &> /dev/null
+        return
+    end
+
     set -l comment_line "# Nix and direnv stuff"
     set -l ignored_files $comment_line\n".direnv"\n"result"
 
