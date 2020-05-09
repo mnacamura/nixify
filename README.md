@@ -16,7 +16,7 @@ A little tool to init nix and direnv environment, inspired by some nixify preced
 > nixify --help
 Usage: nixify [-h|--help] [-V] [-r|--rev=REV] [--sha256=SHA256]
 
-A little tool to init nix and direnv environemnt
+A little tool to init nix and direnv environment
 
 Options:
     -h, --help               show help

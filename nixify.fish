@@ -3,7 +3,7 @@
 set -g program_name nixify
 set -g program_version 0.1
 set -g program_description "\
-A little tool to init nix and direnv environemnt\
+A little tool to init nix and direnv environment\
 "
 
 set -l program_options
