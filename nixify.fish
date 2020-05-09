@@ -10,18 +10,20 @@ set -l program_options
 set -a program_options (fish_opt --short h --long help)
 set -a program_options (fish_opt --short V)
 set -a program_options (fish_opt --short r --long rev --required-val)
+set -a program_options (fish_opt --short s --long sha256 --long-only --required-val)
 argparse $program_options -- $argv
 
 function show_help
     echo "\
-Usage: $program_name [-h|--help] [-V] [-r|--rev=REV]
+Usage: $program_name [-h|--help] [-V] [-r|--rev=REV] [--sha256=SHA256]
 
 $program_description
 
 Options:
     -h, --help               show help
     -V                       show program version
-    -r, --rev=REV            pin nixpkgs to revision hash REV\
+    -r, --rev=REV            pin nixpkgs to revision hash REV
+        --sha256=SHA256      sha256 hash of the revision when pinning nixpkgs\
 "
 end
 
@@ -182,7 +184,11 @@ with import <nixpkgs> {};
 
 if set -q _flag_r
     set -g rev $_flag_r
-    prefetch_nixpkgs $rev
+    if set -q _flag_sha256
+        set -g sha256 $_flag_sha256
+    else
+        prefetch_nixpkgs $rev
+    end
     if test ! $status -eq 0
         warn "don't pin nixpkgs"
     else
