@@ -24,7 +24,7 @@ function edit
 end
 
 function direnv_allow
-    if type -fq direnv
+    if command -q direnv
         command direnv allow
     else
         warn "direnv not found; skip executing 'direnv allow'"
