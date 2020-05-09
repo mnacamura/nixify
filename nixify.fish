@@ -9,17 +9,19 @@ A little tool to init nix and direnv environemnt\
 set -l program_options
 set -a program_options (fish_opt --short h --long help)
 set -a program_options (fish_opt --short V)
+set -a program_options (fish_opt --short r --long rev --required-val)
 argparse $program_options -- $argv
 
 function show_help
     echo "\
-Usage: $program_name [-h|--help] [-V]
+Usage: $program_name [-h|--help] [-V] [-r|--rev=REV]
 
 $program_description
 
 Options:
     -h, --help               show help
-    -V                       show program version\
+    -V                       show program version
+    -r, --rev=REV            pin nixpkgs to revision hash REV\
 "
 end
 
@@ -48,6 +50,22 @@ end
 function err
     echo $program_name: (set_color red)$argv(set_color red) >&2 
     exit 1
+end
+
+function prefetch_nixpkgs -a rev
+    if not command -q nix-prefetch-url
+        warn "nix-prefetch-url not found"
+        return 1
+    end
+
+    msg "prefetching nixpkgs rev $rev..."
+    set -l url "https://github.com/NixOS/nixpkgs/archive/$rev.tar.gz"
+    set -g sha256 (command nix-prefetch-url --type sha256 --unpack $url 2> /dev/null)
+    if test ! $status -eq 0
+        warn "...failed"
+        return 1
+    end
+    msg "...done! sha256 is $sha256"
 end
 
 function find_git_root
@@ -127,6 +145,56 @@ function add_gitignore
     end
 end
 
+set -l default_nix_header "\
+{ pkgs ? import <nixpkgs> {} }:
+"
+
+set -l shell_nix_header "\
+with import <nixpkgs> {};
+"
+
+if set -q _flag_r
+    set -g rev $_flag_r
+    prefetch_nixpkgs $rev
+    if test ! $status -eq 0
+        warn "don't pin nixpkgs"
+    else
+        set default_nix_header "\
+let
+  nixpkgs = fetchNixpkgs {
+    rev = \"$rev\";
+    sha256 = \"$sha256\";
+  };
+
+  fetchNixpkgs = { rev, sha256 }:
+  builtins.fetchTarball {
+    url = \"https://github.com/NixOS/nixpkgs/archive/\${rev}.tar.gz\";
+    inherit sha256;
+  };
+in
+
+{ pkgs ? import nixpkgs {} }:
+"
+
+        set shell_nix_header "\
+let
+  nixpkgs = fetchNixpkgs {
+    rev = \"$rev\";
+    sha256 = \"$sha256\";
+  };
+
+  fetchNixpkgs = { rev, sha256 }:
+  builtins.fetchTarball {
+    url = \"https://github.com/NixOS/nixpkgs/archive/\${rev}.tar.gz\";
+    inherit sha256;
+  };
+in
+
+with import nixpkgs {};
+"
+    end
+end
+
 set -l pkg_nix_template "\
 { stdenv }:
 
@@ -143,16 +211,14 @@ stdenv.mkDerivation rec {
 "
 
 set -l default_nix_template "\
-{ pkgs ? import <nixpkgs> {} }:
-
+$default_nix_header
 with pkgs;
 
 callPackage ./pkg.nix {}
 "
 
 set -l shell_nix_template "\
-with import <nixpkgs> {};
-
+$shell_nix_header
 mkShell {
   inputsFrom = [ (callPackage ./pkg.nix {}) ];
 
