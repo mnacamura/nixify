@@ -6,7 +6,7 @@ in
 
 stdenvNoCC.mkDerivation rec {
   pname = "nixify";
-  version = "0.1";
+  version = "unstable";
 
   src = ./.;
 
