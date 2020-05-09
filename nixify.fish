@@ -45,7 +45,7 @@ end
 function add_nix_file -a name template
     msg "editing $name"
     if test ! -e $name
-        echo $template > $name
+        echo -n $template > $name
     end
     edit $name
 end
@@ -54,12 +54,11 @@ function add_gitignore
     set -l ignored_files "# Nix and direnv stuff"\n".direnv"\n"result"
 
     if test ! -e .gitignore
-        echo -n $ignored_files > .gitignore
+        echo $ignored_files > .gitignore
         msg "added .gitignore"
     else
         if not string match '# Nix and direnv stuff' < .gitignore &> /dev/null
-            echo >> .gitignore
-            echo -n $ignored_files >> .gitignore
+            echo \n$ignored_files >> .gitignore
             msg "appended lines to .gitignore"
         end
     end
