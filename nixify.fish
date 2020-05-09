@@ -66,7 +66,7 @@ function prefetch_nixpkgs -a rev
         return 1
     end
 
-    set -g sha256_memo (mktemp --suffix $program_name)
+    set -g sha256_memo (command mktemp --suffix $program_name)
     function __prefetch_cleanup --on-event PF_CLEANUP
         rm -f $sha256_memo
         set -e sha256_memo
