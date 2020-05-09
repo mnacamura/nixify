@@ -35,13 +35,13 @@ Initialized empty Git repository in /home/you/urrepo/.git/
 > touch default.nix
 > cd subdir/
 > nixify --rev b1f802994
+nixify: guess git repo root /home/you/urrepo is the project root
+nixify: change working directory to /home/you/urrepo
 nixify: prefetching nixpkgs rev b1f802994...
 unpacking...
 [18.3 MiB DL]
 path is '/nix/store/h1xdkwbqk1pi98sq73gpmd4dfzpm1jsm-b1f802994.tar.gz'
 nixify: ...done! sha256 is 1bwq805drajzga63kbs18n49dxa6ln48n5n7f0a2m91378m1b71x
-nixify: guess git repo root /home/you/urrepo is the project root
-nixify: change working directory to /home/you/urrepo
 nixify: added .envrc
 nixify: added pkg.nix
 nixify: default.nix exists; rename it to default.nix~

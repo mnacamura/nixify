@@ -115,6 +115,16 @@ function cd_project_root
     cd $project_root
 end
 
+function set_pname
+    set -g pname
+    if command -q basename
+        set pname (command basename $PWD)
+    else
+        warn "basename not found; you need coreutils installed"
+        set pname "my-pkg"
+    end
+end
+
 function edit
     if test -n "$EDITOR"
         eval $EDITOR $argv
@@ -174,6 +184,9 @@ function direnv_allow
     end
 end
 
+cd_project_root
+set_pname
+
 set -l default_nix_header "\
 { pkgs ? import <nixpkgs> {} }:
 "
@@ -232,7 +245,7 @@ set -l pkg_nix_template "\
 { stdenv }:
 
 stdenv.mkDerivation rec {
-  pname = \"my-pkg\";
+  pname = \"$pname\";
   version = \"0.0.1\";
 
   src = ./.;
@@ -262,7 +275,6 @@ mkShell {
 }
 "
 
-cd_project_root
 add_envrc
 add_nix_file pkg.nix $pkg_nix_template
 add_nix_file default.nix $default_nix_template
