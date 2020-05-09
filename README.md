@@ -44,7 +44,7 @@ nixify: guess git repo root /home/you/urrepo is the project root
 nixify: change working directory to /home/you/urrepo
 nixify: added .envrc
 nixify: added pkg.nix
-nixify: default.nix exists; rename it as default.nix~
+nixify: default.nix exists; rename it to default.nix~
 nixify: added default.nix
 nixify: added shell.nix
 nixify: added .gitignore
