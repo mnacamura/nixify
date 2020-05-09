@@ -1,6 +1,41 @@
 #!/usr/bin/env fish
 
 set -g program_name nixify
+set -g program_version 0.0.1
+set -g program_description "\
+A little tool to init nix and direnv environemnt\
+"
+
+set -l program_options
+set -a program_options (fish_opt --short h --long help)
+set -a program_options (fish_opt --short V)
+argparse $program_options -- $argv
+
+function show_help
+    echo "\
+Usage: $program_name [-h|--help] [-V]
+
+$program_description
+
+Options:
+    -h, --help               show help
+    -V                       show program version\
+"
+end
+
+function show_version
+    echo $program_version
+end
+
+if set -q _flag_h
+    show_help
+    exit
+end
+
+if set -q _flag_V
+    show_version
+    exit
+end
 
 function msg
     echo $program_name: $argv >&2 
