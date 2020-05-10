@@ -81,15 +81,15 @@ function find_git_root
     end
 
     set -l path (command git rev-parse --absolute-git-dir 2> /dev/null)
-    if test $status -eq 0
-        string replace --regex '/\.git$' '' $path
-    else
+    if test ! $status -eq 0
         return 1
     end
+    string replace --regex '/\.git$' '' $path
 end
 
 function cd_project_root
     set -l project_root
+
     set -l git_root (find_git_root 2> /dev/null)
     if test $status -eq 0
         msg "guess git repo root $git_root is the project root"
@@ -204,11 +204,13 @@ with import <nixpkgs> {};
 
 if set -q _flag_r
     set rev $_flag_r
+
     if set -q _flag_sha256
         set sha256 $_flag_sha256
     else
         prefetch_nixpkgs $rev
     end
+
     if test ! $status -eq 0
         warn "don't pin nixpkgs"
     else
