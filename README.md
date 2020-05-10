@@ -25,21 +25,6 @@ direnv: renewed cache and derivation link
 ...
 ```
 
-## Installation
-
-```
-> git clone https://github.com/mnacamura/nixify.git $SOMEWHERE
-> ln -s $SOMEWHERE/nixify-overlay.nix ~/.config/nixpkgs/overlays/ 
-> nix-env -f '<nixpkgs>' -iA nixify           # for the latest release, or
-> nix-env -f '<nixpkgs>' -iA nixify-unstable  # for the latest unstable version
-```
-
-### Dependencies
-
-- `fish`
-- `coreutils`
-- `direnv`
-
 ## Usage
 
 ```
@@ -58,3 +43,18 @@ Options:
     -p, --build-inputs=PKGS           set packages in buildInputs (comma separated list)
     -P, --native-build-inputs=PKGS    set packages in nativeBuildInputs (comma separated list)
 ```
+
+## Installation
+
+```
+> git clone https://github.com/mnacamura/nixify.git $SOMEWHERE
+> ln -s $SOMEWHERE/nixify-overlay.nix ~/.config/nixpkgs/overlays/ 
+> nix-env -f '<nixpkgs>' -iA nixify           # for the latest release, or
+> nix-env -f '<nixpkgs>' -iA nixify-unstable  # for the latest unstable version
+```
+
+### Dependencies
+
+- `fish`
+- `coreutils`
+- `direnv`
