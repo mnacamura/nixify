@@ -9,7 +9,7 @@ A little tool to init nix and direnv environment\
 set -g pkg_name "my-pkg"
 set -g pkg_version "0.1"  # NOTE: $version is a read-only variable in fish
 set -g pkg_rev
-set -g sha256
+set -g pkg_sha256
 set -g build_inputs
 set -g native_build_inputs
 
@@ -64,25 +64,25 @@ end
 
 
 function prefetch_nixpkgs -a rev
-    set -g sha256_memo (command mktemp --suffix $nixify_name)
+    set -g pkg_sha256_memo (command mktemp --suffix $nixify_name)
     function __prefetch_cleanup --on-event PF_CLEANUP
-        rm -f $sha256_memo
-        set -e sha256_memo
+        rm -f $pkg_sha256_memo
+        set -e pkg_sha256_memo
         functions -e __prefetch_cleanup
     end
 
     msg "prefetching nixpkgs rev $rev..."
     set -l url "https://github.com/NixOS/nixpkgs/archive/$rev.tar.gz"
     command nix-prefetch-url --type sha256 --unpack $url | \
-       command tee $sha256_memo 1> /dev/null
+       command tee $pkg_sha256_memo 1> /dev/null
     if test ! $status -eq 0
         warn "...failed"
         emit PF_CLEANUP
         return 1
     end
-    set sha256 (command cat $sha256_memo)
+    set pkg_sha256 (command cat $pkg_sha256_memo)
     emit PF_CLEANUP
-    msg "...done! sha256 is $sha256"
+    msg "...done! sha256 is $pkg_sha256"
 end
 
 function find_git_root
@@ -238,7 +238,7 @@ if set -q _flag_r
     set pkg_rev $_flag_r
 
     if set -q _flag_sha256
-        set sha256 $_flag_sha256
+        set pkg_sha256 $_flag_sha256
     else
         prefetch_nixpkgs $pkg_rev
     end
@@ -250,7 +250,7 @@ if set -q _flag_r
 let
   nixpkgs = fetchNixpkgs {
     rev = \"$pkg_rev\";
-    sha256 = \"$sha256\";
+    sha256 = \"$pkg_sha256\";
   };
 
   fetchNixpkgs = { rev, sha256 }:
@@ -267,7 +267,7 @@ in
 let
   nixpkgs = fetchNixpkgs {
     rev = \"$pkg_rev\";
-    sha256 = \"$sha256\";
+    sha256 = \"$pkg_sha256\";
   };
 
   fetchNixpkgs = { rev, sha256 }:
