@@ -15,18 +15,19 @@ A little tool to init nix and direnv environment, inspired by some nixify preced
 
 ```
 > nixify --help
-Usage: nixify [-h|--help] [-V] [-r|--rev=REV] [--sha256=SHA256] [-n|--name=NAME] [-v|--version=VERSION] [-p|--build-inputs=PKGS]
+Usage: nixify [-h|--help] [-V] [-r|--rev=REV] [--sha256=SHA256] [-n|--name=NAME] [-v|--version=VERSION] [-p|--build-inputs=PKGS] [-P|--native-build-inputs=PKGS]
 
 A little tool to init nix and direnv environment
 
 Options:
-    -h, --help               show help
-    -V                       show program version
-    -r, --rev=REV            pin nixpkgs to revision hash REV
-        --sha256=SHA256      sha256 checksum of the pinned nixpkgs (optional)
-    -n, --name=NAME          set package name to NAME
-    -v, --version=VERSION    set package version to VERSION
-    -p, --build-inputs=PKGS  set packages in buildInputs (comma separated list)
+    -h, --help                        show help
+    -V                                show program version
+    -r, --rev=REV                     pin nixpkgs to revision hash REV
+        --sha256=SHA256               sha256 checksum of the pinned nixpkgs (optional)
+    -n, --name=NAME                   set package name to NAME
+    -v, --version=VERSION             set package version to VERSION
+    -p, --build-inputs=PKGS           set packages in buildInputs (comma separated list)
+    -P, --native-build-inputs=PKGS    set packages in nativeBuildInputs (comma separated list)
 ```
 
 ## Example 

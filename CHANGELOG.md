@@ -2,8 +2,6 @@
 
 ## TODO
 
-- Add option `-P|--native-build-inputs` for inserting packages to
-  `nativeBuildInputs`.
 
 ## Unstable version
 
@@ -13,6 +11,9 @@
   `version` to pkg.nix
 - Guess `pname` from the project root name if flag `-n` is not given
 - Option `-p|--build-inputs` for inserting packages to `buildInputs`
+- Option `-P|--native-build-inputs` for inserting packages to
+  `nativeBuildInputs`
+
 
 ## [0.1](https://github.com/mnacamura/nixify/tree/0.1) (2020-05-10)
 

@@ -11,21 +11,23 @@ set -g pversion "0.1"  # NOTE: $version is a read-only variable in fish
 set -g rev
 set -g sha256
 set -g build_inputs
+set -g native_build_inputs
 
 function show_help
     echo "\
-Usage: $program_name [-h|--help] [-V] [-r|--rev=REV] [--sha256=SHA256] [-n|--name=NAME] [-v|--version=VERSION] [-p|--build-inputs=PKGS]
+Usage: $program_name [-h|--help] [-V] [-r|--rev=REV] [--sha256=SHA256] [-n|--name=NAME] [-v|--version=VERSION] [-p|--build-inputs=PKGS] [-P|--native-build-inputs=PKGS]
 
 $program_description
 
 Options:
-    -h, --help               show help
-    -V                       show program version
-    -r, --rev=REV            pin nixpkgs to revision hash REV
-        --sha256=SHA256      sha256 checksum of the pinned nixpkgs (optional)\
-    -n, --name=NAME          set package name to NAME
-    -v, --version=VERSION    set package version to VERSION
-    -p, --build-inputs=PKGS  set packages in buildInputs (comma separated list)
+    -h, --help                        show help
+    -V                                show program version
+    -r, --rev=REV                     pin nixpkgs to revision hash REV
+        --sha256=SHA256               sha256 checksum of the pinned nixpkgs (optional)\
+    -n, --name=NAME                   set package name to NAME
+    -v, --version=VERSION             set package version to VERSION
+    -p, --build-inputs=PKGS           set packages in buildInputs (comma separated list)
+    -P, --native-build-inputs=PKGS    set packages in nativeBuildInputs (comma separated list)
 "
 end
 
@@ -187,6 +189,7 @@ set -a program_options (fish_opt --short s --long sha256 --long-only --required-
 set -a program_options (fish_opt --short n --long name --required-val)
 set -a program_options (fish_opt --short v --long version --required-val)
 set -a program_options (fish_opt --short p --long build-inputs --required-val)
+set -a program_options (fish_opt --short P --long native-build-inputs --required-val)
 argparse $program_options -- $argv
 
 if set -q _flag_h
@@ -215,6 +218,19 @@ if set -q _flag_p
     set build_inputs (string split ',' $_flag_p)
     set build_inputs (string trim $build_inputs)
 end
+
+if set -q _flag_P
+    set native_build_inputs (string split ',' $_flag_P)
+    set native_build_inputs (string trim $native_build_inputs)
+end
+
+if not command -q sort
+or not command -q uniq
+    err "sort and/or uniq not found; ensure coreutils installed"
+end
+
+set common_inputs (string join \n $build_inputs $native_build_inputs | \
+   command sort | command uniq | string split \n)
 
 set -l default_nix_header "\
 { pkgs ? import <nixpkgs> {} }:
@@ -273,7 +289,7 @@ with import nixpkgs {};
 end
 
 set -l pkg_nix_template "\
-{ "(string join ', ' stdenv $build_inputs)" }:
+{ "(string join ', ' stdenv $common_inputs)" }:
 
 stdenv.mkDerivation rec {
   pname = \"$pname\";
@@ -281,7 +297,7 @@ stdenv.mkDerivation rec {
 
   src = ./.;
 
-  nativeBuildInputs = [ ];
+  nativeBuildInputs = ["(string join ' ' '' $native_build_inputs)" ];
 
   buildInputs = ["(string join ' ' '' $build_inputs)" ];
 }
