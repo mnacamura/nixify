@@ -211,12 +211,10 @@ and set pkg_native_build_inputs (string trim (string split ',' $_flag_P))
 set common_inputs (string join \n $pkg_build_inputs $pkg_native_build_inputs | \
    command sort | command uniq | string split \n)
 
-set -l default_nix_header "\
+set -l nix_header "\
 { pkgs ? import <nixpkgs> {} }:
-"
 
-set -l shell_nix_header "\
-with import <nixpkgs> {};
+with pkgs;
 "
 
 if set -q _flag_r
@@ -226,10 +224,9 @@ if set -q _flag_r
     and set pkg_sha256 $_flag_sha256
     or prefetch_nixpkgs $pkg_rev
 
-    if test ! $status -eq 0
-        warn "don't pin nixpkgs"
-    else
-        set default_nix_header "\
+    test ! $status -eq 0
+    and warn "don't pin nixpkgs"
+    or set nix_header "\
 let
   nixpkgs = fetchNixpkgs {
     rev = \"$pkg_rev\";
@@ -244,25 +241,9 @@ let
 in
 
 { pkgs ? import nixpkgs {} }:
+
+with pkgs;
 "
-
-        set shell_nix_header "\
-let
-  nixpkgs = fetchNixpkgs {
-    rev = \"$pkg_rev\";
-    sha256 = \"$pkg_sha256\";
-  };
-
-  fetchNixpkgs = { rev, sha256 }:
-  builtins.fetchTarball {
-    url = \"https://github.com/NixOS/nixpkgs/archive/\${rev}.tar.gz\";
-    inherit sha256;
-  };
-in
-
-with import nixpkgs {};
-"
-    end
 end
 
 set -l pkg_nix_template "\
@@ -281,14 +262,12 @@ stdenv.mkDerivation rec {
 "
 
 set -l default_nix_template "\
-$default_nix_header
-with pkgs;
-
+$nix_header
 callPackage ./pkg.nix {}
 "
 
 set -l shell_nix_template "\
-$shell_nix_header
+$nix_header
 mkShell {
   inputsFrom = [ (callPackage ./pkg.nix {}) ];
 
