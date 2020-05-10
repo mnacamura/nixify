@@ -6,6 +6,10 @@ set -g program_description "\
 A little tool to init nix and direnv environment\
 "
 
+set -g pname "my-pkg"
+set -g rev
+set -g sha256
+
 set -l program_options
 set -a program_options (fish_opt --short h --long help)
 set -a program_options (fish_opt --short V)
@@ -82,7 +86,7 @@ function prefetch_nixpkgs -a rev
         emit PF_CLEANUP
         return 1
     end
-    set -g sha256 (command cat $sha256_memo)
+    set sha256 (command cat $sha256_memo)
     emit PF_CLEANUP
     msg "...done! sha256 is $sha256"
 end
@@ -116,12 +120,10 @@ function cd_project_root
 end
 
 function set_pname
-    set -g pname
     if command -q basename
         set pname (command basename $PWD)
     else
         warn "basename not found; you need coreutils installed"
-        set pname "my-pkg"
     end
 end
 
@@ -196,9 +198,9 @@ with import <nixpkgs> {};
 "
 
 if set -q _flag_r
-    set -g rev $_flag_r
+    set rev $_flag_r
     if set -q _flag_sha256
-        set -g sha256 $_flag_sha256
+        set sha256 $_flag_sha256
     else
         prefetch_nixpkgs $rev
     end
