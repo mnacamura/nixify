@@ -10,10 +10,11 @@ set -g pname "my-pkg"
 set -g pversion "0.1"  # NOTE: $version is a read-only variable in fish
 set -g rev
 set -g sha256
+set -g build_inputs
 
 function show_help
     echo "\
-Usage: $program_name [-h|--help] [-V] [-r|--rev=REV] [--sha256=SHA256] [-n|--name=NAME] [-v|--version=VERSION]
+Usage: $program_name [-h|--help] [-V] [-r|--rev=REV] [--sha256=SHA256] [-n|--name=NAME] [-v|--version=VERSION] [-p|--build-inputs=PKGS]
 
 $program_description
 
@@ -24,6 +25,7 @@ Options:
         --sha256=SHA256      sha256 checksum of the pinned nixpkgs (optional)\
     -n, --name=NAME          set package name to NAME
     -v, --version=VERSION    set package version to VERSION
+    -p, --build-inputs=PKGS  set packages in buildInputs (comma separated list)
 "
 end
 
@@ -184,6 +186,7 @@ set -a program_options (fish_opt --short r --long rev --required-val)
 set -a program_options (fish_opt --short s --long sha256 --long-only --required-val)
 set -a program_options (fish_opt --short n --long name --required-val)
 set -a program_options (fish_opt --short v --long version --required-val)
+set -a program_options (fish_opt --short p --long build-inputs --required-val)
 argparse $program_options -- $argv
 
 if set -q _flag_h
@@ -206,6 +209,11 @@ end
 
 if set -q _flag_v
     set pversion $_flag_v
+end
+
+if set -q _flag_p
+    set build_inputs (string split ',' $_flag_p)
+    set build_inputs (string trim $build_inputs)
 end
 
 set -l default_nix_header "\
@@ -265,7 +273,7 @@ with import nixpkgs {};
 end
 
 set -l pkg_nix_template "\
-{ stdenv }:
+{ "(string join ', ' stdenv $build_inputs)" }:
 
 stdenv.mkDerivation rec {
   pname = \"$pname\";
@@ -275,7 +283,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ ];
 
-  buildInputs = [ ];
+  buildInputs = ["(string join ' ' '' $build_inputs)" ];
 }
 "
 
