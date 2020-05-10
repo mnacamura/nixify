@@ -10,8 +10,8 @@ set -g pkg_name "my-pkg"
 set -g pkg_version "0.1"  # NOTE: $version is a read-only variable in fish
 set -g pkg_rev
 set -g pkg_sha256
-set -g build_inputs
-set -g native_build_inputs
+set -g pkg_build_inputs
+set -g pkg_native_build_inputs
 
 function show_help
     echo "\
@@ -214,16 +214,16 @@ if set -q _flag_v
 end
 
 if set -q _flag_p
-    set build_inputs (string split ',' $_flag_p)
-    set build_inputs (string trim $build_inputs)
+    set pkg_build_inputs (string split ',' $_flag_p)
+    set pkg_build_inputs (string trim $pkg_build_inputs)
 end
 
 if set -q _flag_P
-    set native_build_inputs (string split ',' $_flag_P)
-    set native_build_inputs (string trim $native_build_inputs)
+    set pkg_native_build_inputs (string split ',' $_flag_P)
+    set pkg_native_build_inputs (string trim $pkg_native_build_inputs)
 end
 
-set common_inputs (string join \n $build_inputs $native_build_inputs | \
+set common_inputs (string join \n $pkg_build_inputs $pkg_native_build_inputs | \
    command sort | command uniq | string split \n)
 
 set -l default_nix_header "\
@@ -291,9 +291,9 @@ stdenv.mkDerivation rec {
 
   src = ./.;
 
-  nativeBuildInputs = ["(string join ' ' '' $native_build_inputs)" ];
+  nativeBuildInputs = ["(string join ' ' '' $pkg_native_build_inputs)" ];
 
-  buildInputs = ["(string join ' ' '' $build_inputs)" ];
+  buildInputs = ["(string join ' ' '' $pkg_build_inputs)" ];
 }
 "
 
