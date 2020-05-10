@@ -6,7 +6,7 @@ set -g nixify_description "\
 A little tool to init nix and direnv environment\
 "
 
-set -g pname "my-pkg"
+set -g pkg_name "my-pkg"
 set -g pversion "0.1"  # NOTE: $version is a read-only variable in fish
 set -g rev
 set -g sha256
@@ -115,8 +115,8 @@ function cd_project_root
     end
 end
 
-function guess_pname
-    set pname (command basename $PWD)
+function guess_pkg_name
+    set pkg_name (command basename $PWD)
 end
 
 function edit
@@ -204,9 +204,9 @@ end
 cd_project_root
 
 if set -q _flag_n
-    set pname $_flag_n
+    set pkg_name $_flag_n
 else
-    guess_pname
+    guess_pkg_name
 end
 
 if set -q _flag_v
@@ -286,7 +286,7 @@ set -l pkg_nix_template "\
 { "(string join ', ' stdenv $common_inputs)" }:
 
 stdenv.mkDerivation rec {
-  pname = \"$pname\";
+  pname = \"$pkg_name\";
   version = \"$pversion\";
 
   src = ./.;
