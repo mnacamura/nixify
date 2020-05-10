@@ -116,7 +116,7 @@ function cd_project_root
 end
 
 function guess_pkg_name
-    set pkg_name (command basename $PWD)
+    command basename $PWD
 end
 
 function edit
@@ -206,7 +206,7 @@ cd_project_root
 if set -q _flag_n
     set pkg_name $_flag_n
 else
-    guess_pkg_name
+    set pkg_name (guess_pkg_name)
 end
 
 if set -q _flag_v
