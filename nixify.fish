@@ -46,10 +46,11 @@ function prefetch_nixpkgs -a rev
         warn "nix-prefetch-url not found"
         return 1
     end
+
     if not command -q tee
     or not command -q cat
     or not command -q mktemp
-        warn "tee, cat, and/or mktemp not found; you need coreutils installed"
+        warn "tee, cat, and/or mktemp not found; ensure coreutils installed"
         return 1
     end
 
@@ -108,7 +109,7 @@ function set_pname
     if command -q basename
         set pname (command basename $PWD)
     else
-        warn "basename not found; you need coreutils installed"
+        warn "basename not found; ensure coreutils installed"
     end
 end
 
@@ -116,7 +117,7 @@ function edit
     if test -n "$EDITOR"
         eval $EDITOR $argv
     else
-        warn "please set EDITOR environment variable to edit nix files"
+        warn "Please set EDITOR environment variable to edit nix files."
     end
 end
 
@@ -136,7 +137,7 @@ function add_nix_file -a name template
         while test -e $name$bk
             set bk $bk$bk
         end
-        warn "$name exists; rename it to $name$bk"
+        warn "$name exists, renamed to $name$bk"
         mv $name $name$bk
     end
 
