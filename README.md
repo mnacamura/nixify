@@ -11,6 +11,12 @@ A little tool to init nix and direnv environment, inspired by some nixify preced
 > nix-env -f '<nixpkgs>' -iA nixify-unstable  # for the latest unstable version
 ```
 
+### Dependencies
+
+- `fish`
+- `coreutils`
+- `direnv`
+
 ## Usage
 
 ```
