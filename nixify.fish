@@ -98,8 +98,10 @@ function cd_project_root
         set project_root $PWD
     end
 
-    msg "change working directory to $project_root"
-    cd $project_root
+    if test $project_root != $PWD
+        msg "change working directory to $project_root"
+        cd $project_root
+    end
 end
 
 function set_pname
