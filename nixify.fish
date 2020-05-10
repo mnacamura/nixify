@@ -1,8 +1,8 @@
 #!/usr/bin/env fish
 
-set -g program_name nixify
-set -g program_version 0.2
-set -g program_description "\
+set -g nixify_name nixify
+set -g nixify_version 0.2
+set -g nixify_description "\
 A little tool to init nix and direnv environment\
 "
 
@@ -15,9 +15,9 @@ set -g native_build_inputs
 
 function show_help
     echo "\
-Usage: $program_name [-h|--help] [-V] [-r|--rev=REV] [--sha256=SHA256] [-n|--name=NAME] [-v|--version=VERSION] [-p|--build-inputs=PKGS] [-P|--native-build-inputs=PKGS]
+Usage: $nixify_name [-h|--help] [-V] [-r|--rev=REV] [--sha256=SHA256] [-n|--name=NAME] [-v|--version=VERSION] [-p|--build-inputs=PKGS] [-P|--native-build-inputs=PKGS]
 
-$program_description
+$nixify_description
 
 Options:
     -h, --help                        show help
@@ -32,19 +32,19 @@ Options:
 end
 
 function show_version
-    echo $program_version
+    echo $nixify_version
 end
 
 function msg
-    echo $program_name: $argv >&2
+    echo $nixify_name: $argv >&2
 end
 
 function warn
-    echo $program_name: (set_color yellow)$argv(set_color normal) >&2
+    echo $nixify_name: (set_color yellow)$argv(set_color normal) >&2
 end
 
 function err
-    echo $program_name: (set_color red)$argv(set_color red) >&2
+    echo $nixify_name: (set_color red)$argv(set_color red) >&2
     exit 1
 end
 
@@ -64,7 +64,7 @@ end
 
 
 function prefetch_nixpkgs -a rev
-    set -g sha256_memo (command mktemp --suffix $program_name)
+    set -g sha256_memo (command mktemp --suffix $nixify_name)
     function __prefetch_cleanup --on-event PF_CLEANUP
         rm -f $sha256_memo
         set -e sha256_memo
@@ -180,16 +180,16 @@ end
 
 
 
-set -l program_options
-set -a program_options (fish_opt --short h --long help)
-set -a program_options (fish_opt --short V)
-set -a program_options (fish_opt --short r --long rev --required-val)
-set -a program_options (fish_opt --short s --long sha256 --long-only --required-val)
-set -a program_options (fish_opt --short n --long name --required-val)
-set -a program_options (fish_opt --short v --long version --required-val)
-set -a program_options (fish_opt --short p --long build-inputs --required-val)
-set -a program_options (fish_opt --short P --long native-build-inputs --required-val)
-argparse $program_options -- $argv
+set -l nixify_options
+set -a nixify_options (fish_opt --short h --long help)
+set -a nixify_options (fish_opt --short V)
+set -a nixify_options (fish_opt --short r --long rev --required-val)
+set -a nixify_options (fish_opt --short s --long sha256 --long-only --required-val)
+set -a nixify_options (fish_opt --short n --long name --required-val)
+set -a nixify_options (fish_opt --short v --long version --required-val)
+set -a nixify_options (fish_opt --short p --long build-inputs --required-val)
+set -a nixify_options (fish_opt --short P --long native-build-inputs --required-val)
+argparse $nixify_options -- $argv
 
 if set -q _flag_h
     show_help
