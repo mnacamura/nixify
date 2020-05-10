@@ -5,6 +5,9 @@
 
 ## Unstable version
 
+
+## [0.2](https://github.com/mnacamura/nixify/tree/0.2) (2020-05-10)
+
 ### Added
 
 - Options `-n|--name` and `-v|--version` for inserting `pname` and
@@ -13,7 +16,6 @@
 - Option `-p|--build-inputs` for inserting packages to `buildInputs`
 - Option `-P|--native-build-inputs` for inserting packages to
   `nativeBuildInputs`
-
 
 ## [0.1](https://github.com/mnacamura/nixify/tree/0.1) (2020-05-10)
 
