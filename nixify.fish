@@ -7,7 +7,7 @@ A little tool to init nix and direnv environment\
 "
 
 set -g pkg_name "my-pkg"
-set -g pversion "0.1"  # NOTE: $version is a read-only variable in fish
+set -g pkg_version "0.1"  # NOTE: $version is a read-only variable in fish
 set -g rev
 set -g sha256
 set -g build_inputs
@@ -210,7 +210,7 @@ else
 end
 
 if set -q _flag_v
-    set pversion $_flag_v
+    set pkg_version $_flag_v
 end
 
 if set -q _flag_p
@@ -287,7 +287,7 @@ set -l pkg_nix_template "\
 
 stdenv.mkDerivation rec {
   pname = \"$pkg_name\";
-  version = \"$pversion\";
+  version = \"$pkg_version\";
 
   src = ./.;
 
