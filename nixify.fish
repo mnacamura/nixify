@@ -50,7 +50,7 @@ end
 
 
 command -q nix-prefetch-url
-or err "nix-prefetch-url not found; ensure nix is installed"
+or err "nix-prefetch-url not found. Make sure it is in your PATH."
 
 command -q basename
 and command -q cat
@@ -58,7 +58,7 @@ and command -q mktemp
 and command -q sort
 and command -q tee
 and command -q uniq
-or err "basename, cat, mktemp, sort, tee, and/or uniq not found; ensure coreutils installed"
+or err "basic commands (basename, cat, etc.) not found. Please install coreutils."
 
 
 function prefetch_nixpkgs -a rev
@@ -140,7 +140,7 @@ function add_nix_file -a name template
         while test -e $name$bk
             set bk $bk$bk
         end
-        warn "$name exists, renamed to $name$bk"
+        warn "$name exists; renamed to $name$bk"
         mv $name $name$bk
     end
 
@@ -167,7 +167,7 @@ end
 function direnv_allow
     command -q direnv
     and command direnv allow
-    or warn "direnv not found; skip executing 'direnv allow'"
+    or warn "direnv not found; skipped executing 'direnv allow'"
 end
 
 
