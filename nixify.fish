@@ -8,7 +8,7 @@ A little tool to init nix and direnv environment\
 
 set -g pkg_name "my-pkg"
 set -g pkg_version "0.1"  # NOTE: $version is a read-only variable in fish
-set -g rev
+set -g pkg_rev
 set -g sha256
 set -g build_inputs
 set -g native_build_inputs
@@ -235,12 +235,12 @@ with import <nixpkgs> {};
 "
 
 if set -q _flag_r
-    set rev $_flag_r
+    set pkg_rev $_flag_r
 
     if set -q _flag_sha256
         set sha256 $_flag_sha256
     else
-        prefetch_nixpkgs $rev
+        prefetch_nixpkgs $pkg_rev
     end
 
     if test ! $status -eq 0
@@ -249,7 +249,7 @@ if set -q _flag_r
         set default_nix_header "\
 let
   nixpkgs = fetchNixpkgs {
-    rev = \"$rev\";
+    rev = \"$pkg_rev\";
     sha256 = \"$sha256\";
   };
 
@@ -266,7 +266,7 @@ in
         set shell_nix_header "\
 let
   nixpkgs = fetchNixpkgs {
-    rev = \"$rev\";
+    rev = \"$pkg_rev\";
     sha256 = \"$sha256\";
   };
 
