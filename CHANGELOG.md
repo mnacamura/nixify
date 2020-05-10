@@ -2,6 +2,9 @@
 
 ## TODO
 
+- Add shell completions (fish, bash, zsh)
+- Add option to fill `buildInputs` in `shell.nix`
+- Enable to use custom templates?
 
 ## Unstable version
 
