@@ -10,13 +10,6 @@ set -g pname "my-pkg"
 set -g rev
 set -g sha256
 
-set -l program_options
-set -a program_options (fish_opt --short h --long help)
-set -a program_options (fish_opt --short V)
-set -a program_options (fish_opt --short r --long rev --required-val)
-set -a program_options (fish_opt --short s --long sha256 --long-only --required-val)
-argparse $program_options -- $argv
-
 function show_help
     echo "\
 Usage: $program_name [-h|--help] [-V] [-r|--rev=REV] [--sha256=SHA256]
@@ -33,16 +26,6 @@ end
 
 function show_version
     echo $program_version
-end
-
-if set -q _flag_h
-    show_help
-    exit
-end
-
-if set -q _flag_V
-    show_version
-    exit
 end
 
 function msg
@@ -184,6 +167,25 @@ function direnv_allow
     else
         warn "direnv not found; skip executing 'direnv allow'"
     end
+end
+
+
+
+set -l program_options
+set -a program_options (fish_opt --short h --long help)
+set -a program_options (fish_opt --short V)
+set -a program_options (fish_opt --short r --long rev --required-val)
+set -a program_options (fish_opt --short s --long sha256 --long-only --required-val)
+argparse $program_options -- $argv
+
+if set -q _flag_h
+    show_help
+    exit
+end
+
+if set -q _flag_V
+    show_version
+    exit
 end
 
 cd_project_root
