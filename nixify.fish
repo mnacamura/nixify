@@ -6,8 +6,8 @@ set -g nixify_description "\
 A little tool to init nix and direnv environment\
 "
 
-set -g pkg_name "my-pkg"
-set -g pkg_version "0.1"  # NOTE: $version is a read-only variable in fish
+set -g pkg_name my-pkg
+set -g pkg_version 0.1  # NOTE: $version is a read-only variable in fish
 set -g pkg_rev
 set -g pkg_sha256
 set -g pkg_build_inputs
@@ -153,7 +153,7 @@ function add_gitignore
     or return
 
     set -l comment_line "# Nix and direnv stuff"
-    set -l ignored_files $comment_line\n".direnv"\n"result"
+    set -l ignored_files $comment_line\n.direnv\nresult
 
     if test ! -e .gitignore
         echo $ignored_files > .gitignore
