@@ -20,7 +20,7 @@ in
 {
   inherit unstable;
 
-  nixify_0_2_1 = makeRelease {
+  release_0_2_1 = makeRelease {
     version = "0.2.1";
     sha256 = "10mmcd5vq47abc2v3rc34v0pla6w636wwl874hmjrgc8skfd321j";
   };
