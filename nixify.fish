@@ -49,18 +49,16 @@ function err
 end
 
 
-if not command -q nix-prefetch-url
-    err "nix-prefetch-url not found; ensure nix is installed"
-end
+command -q nix-prefetch-url
+or err "nix-prefetch-url not found; ensure nix is installed"
 
-if not command -q basename
-or not command -q cat
-or not command -q mktemp
-or not command -q sort
-or not command -q tee
-or not command -q uniq
-    err "basename, cat, mktemp, sort, tee, and/or uniq not found; ensure coreutils installed"
-end
+command -q basename
+and command -q cat
+and command -q mktemp
+and command -q sort
+and command -q tee
+and command -q uniq
+or err "basename, cat, mktemp, sort, tee, and/or uniq not found; ensure coreutils installed"
 
 
 function prefetch_nixpkgs -a rev
@@ -86,14 +84,13 @@ function prefetch_nixpkgs -a rev
 end
 
 function find_git_root
-    if not command -q git
-        return 1
-    end
+    command -q git
+    or return 1
 
     set -l path (command git rev-parse --absolute-git-dir 2> /dev/null)
-    if test ! $status -eq 0
-        return 1
-    end
+    test $status -eq 0
+    or return 1
+
     string replace --regex '/\.git$' '' $path
 end
 
@@ -152,9 +149,8 @@ function add_nix_file -a name template
 end
 
 function add_gitignore
-    if not find_git_root &> /dev/null
-        return
-    end
+    find_git_root &> /dev/null
+    or return
 
     set -l comment_line "# Nix and direnv stuff"
     set -l ignored_files $comment_line\n".direnv"\n"result"
@@ -162,20 +158,16 @@ function add_gitignore
     if test ! -e .gitignore
         echo $ignored_files > .gitignore
         msg "added .gitignore"
-    else
-        if not string match $comment_line < .gitignore &> /dev/null
-            echo \n$ignored_files >> .gitignore
-            msg "appended lines to .gitignore"
-        end
+    else if not string match $comment_line < .gitignore &> /dev/null
+        echo \n$ignored_files >> .gitignore
+        msg "appended lines to .gitignore"
     end
 end
 
 function direnv_allow
-    if command -q direnv
-        command direnv allow
-    else
-        warn "direnv not found; skip executing 'direnv allow'"
-    end
+    command -q direnv
+    and command direnv allow
+    or warn "direnv not found; skip executing 'direnv allow'"
 end
 
 
@@ -203,25 +195,18 @@ end
 
 cd_project_root
 
-if set -q _flag_n
-    set pkg_name $_flag_n
-else
-    set pkg_name (guess_pkg_name)
-end
+set -q _flag_n
+and set pkg_name $_flag_n
+or set pkg_name (guess_pkg_name)
 
-if set -q _flag_v
-    set pkg_version $_flag_v
-end
+set -q _flag_v
+and set pkg_version $_flag_v
 
-if set -q _flag_p
-    set pkg_build_inputs (string split ',' $_flag_p)
-    set pkg_build_inputs (string trim $pkg_build_inputs)
-end
+set -q _flag_p
+and set pkg_build_inputs (string trim (string split ',' $_flag_p))
 
-if set -q _flag_P
-    set pkg_native_build_inputs (string split ',' $_flag_P)
-    set pkg_native_build_inputs (string trim $pkg_native_build_inputs)
-end
+set -q _flag_P
+and set pkg_native_build_inputs (string trim (string split ',' $_flag_P))
 
 set common_inputs (string join \n $pkg_build_inputs $pkg_native_build_inputs | \
    command sort | command uniq | string split \n)
@@ -237,11 +222,9 @@ with import <nixpkgs> {};
 if set -q _flag_r
     set pkg_rev $_flag_r
 
-    if set -q _flag_sha256
-        set pkg_sha256 $_flag_sha256
-    else
-        prefetch_nixpkgs $pkg_rev
-    end
+    set -q _flag_sha256
+    and set pkg_sha256 $_flag_sha256
+    or prefetch_nixpkgs $pkg_rev
 
     if test ! $status -eq 0
         warn "don't pin nixpkgs"
