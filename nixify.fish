@@ -23,11 +23,11 @@ Options:
     -h, --help                        show help
     -V                                show program version
     -r, --rev=REV                     pin nixpkgs to revision hash REV
-        --sha256=SHA256               sha256 checksum of the pinned nixpkgs (optional)\
+        --sha256=SHA256               sha256 checksum of the pinned nixpkgs (optional)
     -n, --name=NAME                   set package name to NAME
     -v, --version=VERSION             set package version to VERSION
     -p, --build-inputs=PKGS           set packages in buildInputs (comma separated list)
-    -P, --native-build-inputs=PKGS    set packages in nativeBuildInputs (comma separated list)
+    -P, --native-build-inputs=PKGS    set packages in nativeBuildInputs (comma separated list)\
 "
 end
 
