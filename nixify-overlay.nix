@@ -16,7 +16,12 @@ in
 {
   nixify-unstable = self.callPackage ./pkg.nix {};
 
-  nixify = self.nixify_0_1;
+  nixify = self.nixify_0_2;
+
+  nixify_0_2 = makeRelease {
+    version = "0.2";
+    sha256 = "1hfmlgkvj9dl600q46b7pvbhqx4y2s1ikgfh75h0b3r9qqzxlw9d";
+  };
 
   nixify_0_1 = makeRelease {
     version = "0.1";
