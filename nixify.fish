@@ -7,12 +7,13 @@ A little tool to init nix and direnv environment\
 "
 
 set -g pname "my-pkg"
+set -g pversion "0.1"  # NOTE: $version is a read-only variable in fish
 set -g rev
 set -g sha256
 
 function show_help
     echo "\
-Usage: $program_name [-h|--help] [-V] [-r|--rev=REV] [--sha256=SHA256]
+Usage: $program_name [-h|--help] [-V] [-r|--rev=REV] [--sha256=SHA256] [-n|--name=NAME] [-v|--version=VERSION]
 
 $program_description
 
@@ -21,6 +22,8 @@ Options:
     -V                       show program version
     -r, --rev=REV            pin nixpkgs to revision hash REV
         --sha256=SHA256      sha256 checksum of the pinned nixpkgs (optional)\
+    -n, --name=NAME          set package name to NAME
+    -v, --version=VERSION    set package version to VERSION
 "
 end
 
@@ -105,7 +108,7 @@ function cd_project_root
     end
 end
 
-function set_pname
+function guess_pname
     if command -q basename
         set pname (command basename $PWD)
     else
@@ -179,6 +182,8 @@ set -a program_options (fish_opt --short h --long help)
 set -a program_options (fish_opt --short V)
 set -a program_options (fish_opt --short r --long rev --required-val)
 set -a program_options (fish_opt --short s --long sha256 --long-only --required-val)
+set -a program_options (fish_opt --short n --long name --required-val)
+set -a program_options (fish_opt --short v --long version --required-val)
 argparse $program_options -- $argv
 
 if set -q _flag_h
@@ -192,7 +197,16 @@ if set -q _flag_V
 end
 
 cd_project_root
-set_pname
+
+if set -q _flag_n
+    set pname $_flag_n
+else
+    guess_pname
+end
+
+if set -q _flag_v
+    set pversion $_flag_v
+end
 
 set -l default_nix_header "\
 { pkgs ? import <nixpkgs> {} }:
@@ -255,7 +269,7 @@ set -l pkg_nix_template "\
 
 stdenv.mkDerivation rec {
   pname = \"$pname\";
-  version = \"0.0.1\";
+  version = \"$pversion\";
 
   src = ./.;
 
