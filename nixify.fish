@@ -48,19 +48,22 @@ function err
     exit 1
 end
 
+
+if not command -q nix-prefetch-url
+    err "nix-prefetch-url not found; ensure nix is installed"
+end
+
+if not command -q basename
+or not command -q cat
+or not command -q mktemp
+or not command -q sort
+or not command -q tee
+or not command -q uniq
+    err "basename, cat, mktemp, sort, tee, and/or uniq not found; ensure coreutils installed"
+end
+
+
 function prefetch_nixpkgs -a rev
-    if not command -q nix-prefetch-url
-        warn "nix-prefetch-url not found"
-        return 1
-    end
-
-    if not command -q tee
-    or not command -q cat
-    or not command -q mktemp
-        warn "tee, cat, and/or mktemp not found; ensure coreutils installed"
-        return 1
-    end
-
     set -g sha256_memo (command mktemp --suffix $program_name)
     function __prefetch_cleanup --on-event PF_CLEANUP
         rm -f $sha256_memo
@@ -113,11 +116,7 @@ function cd_project_root
 end
 
 function guess_pname
-    if command -q basename
-        set pname (command basename $PWD)
-    else
-        warn "basename not found; ensure coreutils installed"
-    end
+    set pname (command basename $PWD)
 end
 
 function edit
@@ -222,11 +221,6 @@ end
 if set -q _flag_P
     set native_build_inputs (string split ',' $_flag_P)
     set native_build_inputs (string trim $native_build_inputs)
-end
-
-if not command -q sort
-or not command -q uniq
-    err "sort and/or uniq not found; ensure coreutils installed"
 end
 
 set common_inputs (string join \n $build_inputs $native_build_inputs | \
