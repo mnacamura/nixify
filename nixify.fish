@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 
 set -g nixify_name nixify
-set -g nixify_version 0.2
+set -g nixify_version 0.2.1
 set -g nixify_description "\
 A little tool to init nix and direnv environment\
 "

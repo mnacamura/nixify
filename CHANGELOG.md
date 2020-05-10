@@ -8,6 +8,9 @@
 
 ## Unstable version
 
+
+## [0.2.1](https://github.com/mnacamura/nixify/tree/0.2.1) (2020-05-10)
+
 ### Fixed
 
 - Stop the program after command-line argument parsing failed
