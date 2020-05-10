@@ -47,7 +47,7 @@ path is '/nix/store/h1xdkwbqk1pi98sq73gpmd4dfzpm1jsm-b1f802994.tar.gz'
 nixify: ...done! sha256 is 1bwq805drajzga63kbs18n49dxa6ln48n5n7f0a2m91378m1b71x
 nixify: added .envrc
 nixify: added pkg.nix
-nixify: default.nix exists; rename it to default.nix~
+nixify: default.nix exists; renamed to default.nix~
 nixify: added default.nix
 nixify: added shell.nix
 nixify: added .gitignore
