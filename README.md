@@ -58,3 +58,7 @@ Options:
 - `fish`
 - `coreutils`
 - `direnv`
+
+## License
+
+[MIT](LICENSE)
