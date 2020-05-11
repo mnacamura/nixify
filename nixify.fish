@@ -93,12 +93,21 @@ function find_git_root
     string replace --regex '/\.git$' '' $path
 end
 
+function abbr_home
+    if set -q HOME
+        string replace --regex "^$HOME" '~' $argv
+    else
+        echo $argv
+        return 1
+    end
+end
+
 function cd_project_root
     set -l project_root
 
     set -l git_root (find_git_root 2> /dev/null)
     if test $status -eq 0
-        msg "guess git repo root $git_root is the project root"
+        msg "guess git repo root "(abbr_home $git_root)" is the project root"
         set project_root $git_root
     else
         msg "guess current directory is the project root"
@@ -106,7 +115,7 @@ function cd_project_root
     end
 
     if test $project_root != $PWD
-        msg "change working directory to $project_root"
+        msg "change working directory to "(abbr_home $project_root)
         cd $project_root
     end
 end
