@@ -16,7 +16,15 @@ set -g pkg_native_build_inputs
 
 function show_help
     echo "\
-Usage: $nixify_name [-h|--help] [-V] [-r|--rev=REV] [--sha256=SHA256] [-n|--name=NAME] [-v|--version=VERSION] [-p|--build-inputs=PKGS] [-P|--native-build-inputs=PKGS]
+Usage: $nixify_name \
+[-h|--help] \
+[-V] \
+[-r|--rev=REV] \
+[--sha256=SHA256] \
+[-n|--name=NAME] \
+[-v|--version=VERSION] \
+[-p|--build-inputs=PKGS] \
+[-P|--native-build-inputs=PKGS]
 
 $nixify_description
 
