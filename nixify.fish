@@ -88,7 +88,6 @@ function find_git_root
     or return 1
 
     set -l path (command git rev-parse --absolute-git-dir 2> /dev/null)
-    test $status -eq 0
     or return 1
 
     string replace --regex '/\.git$' '' $path
@@ -182,7 +181,6 @@ set -a nixify_options (fish_opt --short v --long version --required-val)
 set -a nixify_options (fish_opt --short p --long build-inputs --required-val)
 set -a nixify_options (fish_opt --short P --long native-build-inputs --required-val)
 argparse $nixify_options -- $argv
-test $status -eq 0
 or err "abort"
 
 if set -q _flag_h
