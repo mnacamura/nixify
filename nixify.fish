@@ -6,10 +6,11 @@ set -g nixify_description "\
 A little tool to init nix and direnv environment\
 "
 
+set -g nixpkgs_rev
+set -g nixpkgs_sha256
+
 set -g pkg_name my-pkg
 set -g pkg_version 0.1  # NOTE: $version is a read-only variable in fish
-set -g pkg_rev
-set -g pkg_sha256
 set -g pkg_build_inputs
 set -g pkg_native_build_inputs
 
@@ -62,25 +63,25 @@ or err "basic commands (basename, cat, etc.) not found. Please install coreutils
 
 
 function prefetch_nixpkgs -a rev
-    set -g pkg_sha256_memo (command mktemp --suffix $nixify_name)
+    set -g nixpkgs_sha256_memo (command mktemp --suffix $nixify_name)
     function __prefetch_cleanup --on-event PF_CLEANUP
-        command rm -f $pkg_sha256_memo
-        set -e pkg_sha256_memo
+        command rm -f $nixpkgs_sha256_memo
+        set -e nixpkgs_sha256_memo
         functions -e __prefetch_cleanup
     end
 
     msg "prefetching nixpkgs rev $rev..."
     set -l url "https://github.com/NixOS/nixpkgs/archive/$rev.tar.gz"
     command nix-prefetch-url --type sha256 --unpack $url | \
-       command tee $pkg_sha256_memo 1> /dev/null
+       command tee $nixpkgs_sha256_memo 1> /dev/null
     if test ! $status -eq 0
         warn "...failed"
         emit PF_CLEANUP
         return 1
     end
-    set pkg_sha256 (command cat $pkg_sha256_memo)
+    set nixpkgs_sha256 (command cat $nixpkgs_sha256_memo)
     emit PF_CLEANUP
-    msg "...done! sha256 is $pkg_sha256"
+    msg "...done! sha256 is $nixpkgs_sha256"
 end
 
 function find_git_root
@@ -229,19 +230,19 @@ with pkgs;
 "
 
 if set -q _flag_r
-    set pkg_rev $_flag_r
+    set nixpkgs_rev $_flag_r
 
     set -q _flag_sha256
-    and set pkg_sha256 $_flag_sha256
-    or prefetch_nixpkgs $pkg_rev
+    and set nixpkgs_sha256 $_flag_sha256
+    or prefetch_nixpkgs $nixpkgs_rev
 
     test ! $status -eq 0
     and warn "don't pin nixpkgs"
     or set nix_header "\
 let
   nixpkgs = fetchNixpkgs {
-    rev = \"$pkg_rev\";
-    sha256 = \"$pkg_sha256\";
+    rev = \"$nixpkgs_rev\";
+    sha256 = \"$nixpkgs_sha256\";
   };
 
   fetchNixpkgs = { rev, sha256 }:
