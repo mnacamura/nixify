@@ -9,7 +9,7 @@ A little tool to init nix and direnv environment\
 set -g nixpkgs_rev
 set -g nixpkgs_sha256
 
-set -g pkg_name my-pkg
+set -g pkg_pname my-pkg
 set -g pkg_version 0.1  # NOTE: $version is a read-only variable in fish
 set -g pkg_build_inputs
 set -g pkg_native_build_inputs
@@ -129,7 +129,7 @@ function cd_project_root
     end
 end
 
-function guess_pkg_name
+function guess_pkg_pname
     command basename $PWD
 end
 
@@ -214,8 +214,8 @@ end
 cd_project_root
 
 set -q _flag_n
-and set pkg_name $_flag_n
-or set pkg_name (guess_pkg_name)
+and set pkg_pname $_flag_n
+or set pkg_pname (guess_pkg_pname)
 
 set -q _flag_v
 and set pkg_version $_flag_v
@@ -270,7 +270,7 @@ set -l pkg_nix_template "\
 { "(string join ', ' stdenv $common_inputs)" }:
 
 stdenv.mkDerivation rec {
-  pname = \"$pkg_name\";
+  pname = \"$pkg_pname\";
   version = \"$pkg_version\";
 
   src = ./.;
