@@ -6,8 +6,8 @@ A little tool to init nix and direnv environment, inspired by some nixify preced
 
 ```
 > nixify --rev b1f802994 -p fish,coreutils -P makeWrapper
-nixify: guess git repo root /home/you/urrepo is the project root
-nixify: change working directory to /home/you/urrepo
+nixify: guess git repo root ~/urrepo is the project root
+nixify: change working directory to ~/urrepo
 nixify: prefetching nixpkgs rev b1f802994...
 unpacking...
 [18.3 MiB DL]
