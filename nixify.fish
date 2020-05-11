@@ -3,7 +3,7 @@
 set -g nixify_name nixify
 set -g nixify_version 0.2.1
 set -g nixify_description "\
-A little tool to init nix and direnv environment\
+A little tool to init nix and direnv environment.\
 "
 
 set -g nixpkgs_rev
@@ -17,25 +17,25 @@ set -g pkg_native_build_inputs
 function show_help
     echo "\
 Usage: $nixify_name \
+[-r|--rev REV [--sha256 SHA256]] \
+[-n|--pname NAME] \
+[-v|--version VERSION] \
+[-p|--build-inputs PKGS] \
+[-P|--native-build-inputs PKGS] \
 [-h|--help] \
-[-V] \
-[-r|--rev=REV [--sha256=SHA256]] \
-[-n|--pname=NAME] \
-[-v|--version=VERSION] \
-[-p|--build-inputs=PKGS] \
-[-P|--native-build-inputs=PKGS]
+[-V]
 
 $nixify_description
 
 Options:
+    -r, --rev REV                     pin nixpkgs to revision hash REV
+        --sha256 SHA256               sha256 checksum of the pinned nixpkgs (optional)
+    -n, --pname NAME                  set package pname to NAME
+    -v, --version VERSION             set package version to VERSION
+    -p, --build-inputs PKGS           set packages in buildInputs (comma separated list)
+    -P, --native-build-inputs PKGS    set packages in nativeBuildInputs (comma separated list)
     -h, --help                        show help
-    -V                                show program version
-    -r, --rev=REV                     pin nixpkgs to revision hash REV
-        --sha256=SHA256               sha256 checksum of the pinned nixpkgs (optional)
-    -n, --pname=NAME                  set package pname to NAME
-    -v, --version=VERSION             set package version to VERSION
-    -p, --build-inputs=PKGS           set packages in buildInputs (comma separated list)
-    -P, --native-build-inputs=PKGS    set packages in nativeBuildInputs (comma separated list)\
+    -V                                show program version\
 "
 end
 
