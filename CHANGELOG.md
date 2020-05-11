@@ -8,6 +8,9 @@
 
 ## Unstable version
 
+### Changed
+
+- Long option name `--name` is now `--pname` for consistency
 
 ## [0.2.1](https://github.com/mnacamura/nixify/tree/0.2.1) (2020-05-10)
 

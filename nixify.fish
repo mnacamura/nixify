@@ -21,7 +21,7 @@ Usage: $nixify_name \
 [-V] \
 [-r|--rev=REV] \
 [--sha256=SHA256] \
-[-n|--name=NAME] \
+[-n|--pname=NAME] \
 [-v|--version=VERSION] \
 [-p|--build-inputs=PKGS] \
 [-P|--native-build-inputs=PKGS]
@@ -33,7 +33,7 @@ Options:
     -V                                show program version
     -r, --rev=REV                     pin nixpkgs to revision hash REV
         --sha256=SHA256               sha256 checksum of the pinned nixpkgs (optional)
-    -n, --name=NAME                   set package name to NAME
+    -n, --pname=NAME                  set package pname to NAME
     -v, --version=VERSION             set package version to VERSION
     -p, --build-inputs=PKGS           set packages in buildInputs (comma separated list)
     -P, --native-build-inputs=PKGS    set packages in nativeBuildInputs (comma separated list)\
@@ -194,7 +194,7 @@ set -a nixify_options (fish_opt --short h --long help)
 set -a nixify_options (fish_opt --short V)
 set -a nixify_options (fish_opt --short r --long rev --required-val)
 set -a nixify_options (fish_opt --short s --long sha256 --long-only --required-val)
-set -a nixify_options (fish_opt --short n --long name --required-val)
+set -a nixify_options (fish_opt --short n --long pname --required-val)
 set -a nixify_options (fish_opt --short v --long version --required-val)
 set -a nixify_options (fish_opt --short p --long build-inputs --required-val)
 set -a nixify_options (fish_opt --short P --long native-build-inputs --required-val)
