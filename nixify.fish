@@ -208,8 +208,10 @@ and set pkg_build_inputs (string trim (string split ',' $_flag_p))
 set -q _flag_P
 and set pkg_native_build_inputs (string trim (string split ',' $_flag_P))
 
-set common_inputs (string join \n $pkg_build_inputs $pkg_native_build_inputs | \
-   command sort | command uniq | string split \n)
+set common_inputs ( \
+   string join \n $pkg_build_inputs $pkg_native_build_inputs | \
+   command sort | \
+   command uniq)
 
 set -l nix_header "\
 { pkgs ? import <nixpkgs> {} }:
