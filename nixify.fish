@@ -19,8 +19,7 @@ function show_help
 Usage: $nixify_name \
 [-h|--help] \
 [-V] \
-[-r|--rev=REV] \
-[--sha256=SHA256] \
+[-r|--rev=REV [--sha256=SHA256]] \
 [-n|--pname=NAME] \
 [-v|--version=VERSION] \
 [-p|--build-inputs=PKGS] \
@@ -237,7 +236,10 @@ set -l nix_header "\
 with pkgs;
 "
 
-if set -q _flag_r
+if not set -q _flag_r
+    set -q _flag_sha256
+    and warn "option --sha256 is set without option --rev, ignored"
+else
     set nixpkgs_rev $_flag_r
 
     set -q _flag_sha256
