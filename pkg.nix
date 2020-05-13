@@ -1,10 +1,10 @@
-{ stdenvNoCC, fish, coreutils, makeWrapper }:
+{ stdenv, fish, coreutils, makeWrapper }:
 
 let
-  inherit (stdenvNoCC.lib) makeBinPath;
+  inherit (stdenv.lib) makeBinPath;
 in
 
-stdenvNoCC.mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "nixify";
   version = "unstable";
 
@@ -19,7 +19,7 @@ stdenvNoCC.mkDerivation rec {
     wrapProgram $out/bin/nixify --prefix PATH : "${makeBinPath buildInputs}"
   '';
 
-  meta = with stdenvNoCC.lib; {
+  meta = with stdenv.lib; {
     description = "A little tool to init nix and direnv environment";
     homepage = "https://github.com/mnacamura/nixify/";
     license = licenses.mit;
