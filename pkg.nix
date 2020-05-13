@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
   installFlags = [ "DEST=$(out)" "PREFIX=" ];
 
   preFixup = ''
-    wrapProgram $out/bin/nixify --prefix PATH : "${makeBinPath buildInputs}"
+    wrapProgram $out/bin/nixify --prefix PATH : "${makeBinPath [ coreutils ]}"
   '';
 
   meta = with stdenv.lib; {
