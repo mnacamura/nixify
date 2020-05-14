@@ -213,10 +213,11 @@ contains() {
     local target="$1"
     shift
 
-    local has_target=
+    local has_target
     for elem in "$@"; do
-        if [ "$target" == "$elem" ]; then
+        if [ "$target" = "$elem" ]; then
             has_target=yes
+            break
         fi
     done
     test -n "$has_target"
