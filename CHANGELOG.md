@@ -22,6 +22,10 @@
   separated list
 - Options do not accept `--option=value` form
 
+### Added
+
+- Colorful message prefix (`nixify: ...`)
+
 ### Internal
 
 - Rewritten in bash

@@ -50,16 +50,29 @@ show_version() {
     echo "$nixify_version"
 }
 
+# 96: bright cyan, 94: bright blue
+nixify_color=96
+toggle_nixify_color() {
+    case "$nixify_color" in
+        94) nixify_color=96;;
+        96) nixify_color=94;;
+        *) return 1;;
+    esac
+}
+
 msg() {
-    echo "$nixify_name: $*" >&2
+    toggle_nixify_color
+    echo -e "\e[${nixify_color}m$nixify_name:\e[0m $*" >&2
 }
 
 warn() {
-    echo -e "$nixify_name: \e[33m$*\e[0m" >&2
+    toggle_nixify_color
+    echo -e "\e[${nixify_color}m$nixify_name:\e[0m \e[33m$*\e[0m" >&2
 }
 
 err() {
-    echo -e "$nixify_name: \e[31m$*\e[0m" >&2
+    toggle_nixify_color
+    echo -e "\e[${nixify_color}m$nixify_name:\e[0m \e[31m$*\e[0m" >&2
     exit 1
 }
 
