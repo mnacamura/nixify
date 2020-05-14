@@ -14,8 +14,12 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ fish coreutils ];
 
-  buildCommand = ''
-    install -D $src/nixify.fish $out/bin/nixify
+  dontConfigure = true;
+  dontBuild = true;
+
+  installFlags = [ "DEST=$(out)" "PREFIX=" ];
+
+  preFixup = ''
     wrapProgram $out/bin/nixify --prefix PATH : "${makeBinPath buildInputs}"
   '';
 
