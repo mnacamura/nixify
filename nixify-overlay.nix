@@ -11,6 +11,17 @@ let
       inherit sha256;
     };
   });
+
+  makeOldRelease = { version, sha256 }:
+  (self.callPackage ./pkg_old.nix {}).overrideAttrs (_: {
+    inherit version;
+    src = self.fetchFromGitHub {
+      owner = "mnacamura";
+      repo = "nixify";
+      rev = version;
+      inherit sha256;
+    };
+  });
 in
 
 {
@@ -18,17 +29,17 @@ in
 
   nixify = self.nixify_0_2_1;
 
-  nixify_0_2_1 = makeRelease {
+  nixify_0_2_1 = makeOldRelease {
     version = "0.2.1";
     sha256 = "10mmcd5vq47abc2v3rc34v0pla6w636wwl874hmjrgc8skfd321j";
   };
 
-  nixify_0_2 = makeRelease {
+  nixify_0_2 = makeOldRelease {
     version = "0.2";
     sha256 = "1hfmlgkvj9dl600q46b7pvbhqx4y2s1ikgfh75h0b3r9qqzxlw9d";
   };
 
-  nixify_0_1 = makeRelease {
+  nixify_0_1 = makeOldRelease {
     version = "0.1";
     sha256 = "12razszgz0q7h8fsq2n272ldc6zi45ylh3vawbm5ls7jraxi846v";
   };
