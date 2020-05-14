@@ -38,6 +38,7 @@ Options:
 
 ### Dependencies
 
+- `bash`
 - `coreutils`
 - `direnv`
 
