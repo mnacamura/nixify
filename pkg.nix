@@ -1,4 +1,4 @@
-{ stdenv, coreutils, gnugrep, makeWrapper }:
+{ stdenv, coreutils, gnugrep, nix, makeWrapper }:
 
 let
   inherit (stdenv.lib) makeBinPath;
@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ makeWrapper ];
 
-  buildInputs = [ coreutils gnugrep ];
+  buildInputs = [ coreutils gnugrep nix ];
 
   dontConfigure = true;
   dontBuild = true;

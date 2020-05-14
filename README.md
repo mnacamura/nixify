@@ -40,6 +40,7 @@ Options:
 
 - `bash`
 - `coreutils`
+- `nix`
 - `direnv`
 
 ## License
