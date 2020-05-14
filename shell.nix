@@ -5,7 +5,7 @@ with pkgs;
 mkShell {
   inputsFrom = [ (callPackage ./pkg.nix {}) ];
 
-  buildInputs = [ ];
+  buildInputs = [ shellcheck ];
 
   shellHook = ''
   '';

@@ -102,7 +102,8 @@ prefetch_nixpkgs() {
 }
 
 find_git_root() {
-    local path="$(command git rev-parse --absolute-git-dir 2> /dev/null)"
+    local path
+    path="$(command git rev-parse --absolute-git-dir 2> /dev/null)"
     if [ -z "$path" ]; then
        return 1
     fi
@@ -119,9 +120,9 @@ abbr_home() {
 }
 
 cd_project_root() {
-    local project_root
+    local project_root git_root
 
-    local git_root="$(find_git_root 2> /dev/null)"
+    git_root="$(find_git_root 2> /dev/null)"
     if [ -n "$git_root" ]; then
         msg "guess git repo root $(abbr_home "$git_root") is the project root"
         project_root="$git_root"
@@ -157,7 +158,7 @@ add_nix_file() {
 }
 
 add_gitignore() {
-    if ! find_git_root 2>&1 > /dev/null; then
+    if ! find_git_root > /dev/null 2>&1; then
         return
     fi
 
@@ -173,7 +174,7 @@ add_gitignore() {
         return
     fi
 
-    if ! command grep "$comment_line" .gitignore 2>&1 > /dev/null; then
+    if ! command grep "$comment_line" .gitignore > /dev/null 2>&1; then
         echo >> .gitignore
         echo "$comment_line" >> .gitignore
         for file in "${ignored_files[@]}"; do
@@ -190,7 +191,7 @@ add_envrc() {
         return
     fi
 
-    if ! command grep 'use nix' .envrc 2>&1 > /dev/null; then
+    if ! command grep 'use nix' .envrc > /dev/null 2>&1; then
         echo "use nix" >> .envrc
         msg "appended 'use nix' to .envrc"
     fi
@@ -284,8 +285,8 @@ done
 
 cd_project_root
 
-: ${pkg_pname:="$(guess_pkg_pname)"}
-: ${pkg_version:=0.1}
+: "${pkg_pname:="$(guess_pkg_pname)"}"
+: "${pkg_version:=0.1}"
 
 common_build_inputs=()
 for pkg in "${pkg_build_inputs[@]}" \
@@ -308,7 +309,7 @@ if [ -z "$nixpkgs_rev" ]; then
     fi
 else
     if [ -z "$nixpkgs_sha256" ]; then
-        if ! prefetch_nixpkgs $nixpkgs_rev; then
+        if ! prefetch_nixpkgs "$nixpkgs_rev"; then
             warn "don't pin nixpkgs"
         fi
     fi
