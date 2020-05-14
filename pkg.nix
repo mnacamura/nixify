@@ -1,4 +1,4 @@
-{ stdenv, fish, coreutils, makeWrapper }:
+{ stdenv, coreutils, gnugrep, makeWrapper }:
 
 let
   inherit (stdenv.lib) makeBinPath;
@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ makeWrapper ];
 
-  buildInputs = [ fish coreutils ];
+  buildInputs = [ coreutils gnugrep ];
 
   dontConfigure = true;
   dontBuild = true;
@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
   installFlags = [ "DEST=$(out)" "PREFIX=" ];
 
   preFixup = ''
-    wrapProgram $out/bin/nixify --prefix PATH : "${makeBinPath [ coreutils ]}"
+    wrapProgram $out/bin/nixify --prefix PATH : "${makeBinPath buildInputs}"
   '';
 
   meta = with stdenv.lib; {

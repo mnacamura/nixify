@@ -5,7 +5,7 @@
 - Add shell completions (fish, bash, zsh)
 - Add option to fill `buildInputs` in `shell.nix`
 - Enable to use custom templates?
-- Add tests (using `fishtape`?)
+- Add tests (using `bats`?)
 - Enable to specify the project directory
 - Revert to initial state after aborting:
     1. First, install files to a temporal directory.
@@ -18,6 +18,13 @@
 ### Changed
 
 - Long option name `--name` is now `--pname` for consistency
+- `-p|--build-inputs` and `-P|--native-build-inputs` are now given by space
+  separated list
+- Options do not accept `--option=value` form
+
+### Internal
+
+- Rewritten in bash
 
 ## [0.2.1](https://github.com/mnacamura/nixify/tree/0.2.1) (2020-05-10)
 
