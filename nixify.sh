@@ -306,12 +306,12 @@ cd_project_root
 : "${pkg_pname:="$(guess_pkg_pname)"}"
 : "${pkg_version:=0.1}"
 
-common_build_inputs=()
+pkg_common_build_inputs=()
 for pkg in "${pkg_build_inputs[@]}" \
            "${pkg_native_build_inputs[@]}"
 do
-    if ! contains "$pkg" "${common_build_inputs[@]}"; then
-        common_build_inputs+=("$pkg")
+    if ! contains "$pkg" "${pkg_common_build_inputs[@]}"; then
+        pkg_common_build_inputs+=("$pkg")
     fi
 done
 
@@ -354,7 +354,7 @@ with pkgs;
 fi
 
 pkg_nix_template="\
-{ $(pkgs_join ',' stdenv "${common_build_inputs[@]}") }:
+{ $(pkgs_join ',' stdenv "${pkg_common_build_inputs[@]}") }:
 
 stdenv.mkDerivation rec {
   pname = \"$pkg_pname\";
