@@ -11,7 +11,7 @@ precedents.
 
 ```
 > nixify --help
-Usage: nixify [-r|--rev REV [--sha256 SHA256]] [-n|--pname NAME] [-v|--version VERSION] [-p|--build-inputs [PKG...]] [-P|--native-build-inputs [PKG...]] [-h|--help] [-V]
+Usage: nixify [-r|--rev REV [--sha256 SHA256]] [-n|--pname NAME] [-v|--version VERSION] [-p|--build-inputs [PKG...]] [-P|--native-build-inputs [PKG...]] [-s|--shell-build-inputs [PKG...]] [-h|--help] [-V]
 
 A little tool to init nix and direnv environment.
 
@@ -22,6 +22,7 @@ Options:
     -v, --version VERSION               set package version to VERSION
     -p, --build-inputs [PKG...]         set packages in buildInputs
     -P, --native-build-inputs [PKG...]  set packages in nativeBuildInputs
+    -s, --shell-build-inputs [PKG...]   set packages in buildInputs of shell.nix
     -h, --help                          show help
     -V                                  show program version
 ```

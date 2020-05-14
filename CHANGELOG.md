@@ -3,7 +3,6 @@
 ## TODO
 
 - Add shell completions (fish, bash, zsh)
-- Add option to fill `buildInputs` in `shell.nix`
 - Enable to use custom templates?
 - Add tests (using `bats`?)
 - Enable to specify the project directory
@@ -25,6 +24,7 @@
 ### Added
 
 - Colorful message prefix (`nixify: ...`)
+- Option `-s|--shell-build-inputs` to set `buildInputs` in `shell.nix`
 
 ### Internal
 

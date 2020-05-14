@@ -16,6 +16,8 @@ pkg_version=
 pkg_build_inputs=()
 pkg_native_build_inputs=()
 
+shell_build_inputs=()
+
 show_usage() {
     echo "\
 Usage: $nixify_name \
@@ -24,6 +26,7 @@ Usage: $nixify_name \
 [-v|--version VERSION] \
 [-p|--build-inputs [PKG...]] \
 [-P|--native-build-inputs [PKG...]] \
+[-s|--shell-build-inputs [PKG...]] \
 [-h|--help] \
 [-V]\
 "
@@ -41,6 +44,7 @@ Options:
     -v, --version VERSION               set package version to VERSION
     -p, --build-inputs [PKG...]         set packages in buildInputs
     -P, --native-build-inputs [PKG...]  set packages in nativeBuildInputs
+    -s, --shell-build-inputs [PKG...]   set packages in buildInputs of shell.nix
     -h, --help                          show help
     -V                                  show program version\
 "
@@ -269,6 +273,20 @@ while [ "$#" -gt 0 ]; do
                 esac
             done
             ;;
+        -s|--shell-build-inputs)
+            shift
+            while [ "$#" -gt 0 ]; do
+                case "$1" in
+                    -*)
+                        break
+                        ;;
+                    *)
+                        shell_build_inputs+=("$1")
+                        shift
+                        ;;
+                esac
+            done
+            ;;
         -h|--help)
             show_help
             exit
@@ -361,7 +379,7 @@ $nix_header
 mkShell {
   inputsFrom = [ (callPackage ./pkg.nix {}) ];
 
-  buildInputs = [ ];
+  buildInputs = [ $(pkgs_join ' ' "${shell_build_inputs[@]}") ];
 
   shellHook = ''
   '';
