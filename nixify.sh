@@ -126,8 +126,7 @@ abbr_home() {
 cd_project_root() {
     local project_root git_root
 
-    git_root="$(find_git_root 2> /dev/null)"
-    if [ -n "$git_root" ]; then
+    if [ -n "${git_root:="$(find_git_root 2> /dev/null)"}" ]; then
         msg "guess git repo root $(abbr_home "$git_root") is the project root"
         project_root="$git_root"
     else
