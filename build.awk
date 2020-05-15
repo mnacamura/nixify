@@ -3,11 +3,8 @@ $0 !~ /^\. / && $0 !~ /^source / {
 }
 
 /^\. / || /^source / {
-    _RS = RS
-    RS = "^$"
-    while ( (getline contents < $2) > 0 ) {
-        print contents
+    while ( (getline line < $2) > 0 ) {
+        if ( line !~ /^#!/ )
+            print line
     }
-    RS = _RS
 }
-
