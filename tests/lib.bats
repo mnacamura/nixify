@@ -26,7 +26,7 @@ set -euo pipefail
     [ "$in_usage" = "$in_help" ]
 }
 
-@test "toggle colors" {
+@test "toggle colors for eye candy" {
     local _color _alt_color
     _color="$nixify_color"
     toggle_nixify_color
@@ -40,7 +40,7 @@ set -euo pipefail
     warn "works"
     [ "$nixify_color" = "$_alt_color" ]
 
-    msg "fine"
+    msg "very good"
     [ "$nixify_color" = "$_color" ]
 }
 
@@ -51,3 +51,4 @@ set -euo pipefail
     echo "$output" | command grep 'prefetching'
     echo "$output" | command grep 'failed'
 }
+
