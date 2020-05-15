@@ -111,7 +111,9 @@ cd_project_root() {
 
     if [ "$project_root" != "$PWD" ]; then
         msg "change working directory to $(abbr_home "$project_root")"
-        cd "$project_root"
+        if ! cd "$project_root"; then
+            err "cannot change directory to $project_root"
+        fi
     fi
 }
 
