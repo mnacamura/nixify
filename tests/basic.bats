@@ -1,5 +1,6 @@
 #!/usr/bin/env bats
 
+# shellcheck source=lib.sh
 source "$BATS_TEST_DIRNAME/../lib.sh" >&2
 
 @test "options in usage and help are consistent" {

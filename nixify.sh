@@ -12,6 +12,7 @@ pkg_native_build_inputs=()
 
 shell_build_inputs=()
 
+# shellcheck source=lib.sh
 source ./lib.sh
 
 while [ "$#" -gt 0 ]; do

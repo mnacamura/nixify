@@ -4,8 +4,7 @@
             if ( line !~ /^#!/ )
                 print line
         }
-    }
-    else {
+    } else if ( $0 !~ /^# shellcheck / ) {
         print
     }
 
