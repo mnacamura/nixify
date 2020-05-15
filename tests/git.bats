@@ -43,3 +43,26 @@ teardown() {
 
     ! echo "$output" | command grep 'change working directory'
 }
+
+@test "do not add .gitignore if not in git repo" {
+    command rm -rf .git
+    run add_gitignore
+    [ "$status" -eq 0 ]
+    [ ! -e .gitignore ]
+}
+
+@test "add .gitignore in git repo" {
+    run add_gitignore
+    [ "$status" -eq 0 ]
+    echo "$output" | command grep "added .gitignore"
+    command cat .gitignore | command grep .direnv
+    command cat .gitignore | command grep result
+}
+
+@test "append lines to .gitignore if .gitignore exists" {
+    echo "pen pineapple" > .gitignore
+    run add_gitignore
+    [ "$status" -eq 0 ]
+    echo "$output" | command grep "appended lines to .gitignore"
+    command cat .gitignore | command grep 'pen pineapple'
+}

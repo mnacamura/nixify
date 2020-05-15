@@ -140,14 +140,20 @@ add_gitignore() {
         return
     fi
 
-    local comment_line="# Nix and direnv stuff"
-    local ignored_files=(.direnv result)
+    local comment_line ignored_files
+    comment_line="# Nix and direnv stuff"
+    ignored_files=(.direnv result)
+
+    __append_lines_to() {
+        for file in "${ignored_files[@]}"; do
+            echo "$file" >> "$1"
+        done
+        unset -f __append_lines
+    }
 
     if [ ! -e .gitignore ]; then
         echo "$comment_line" > .gitignore
-        for file in "${ignored_files[@]}"; do
-            echo "$file" >> .gitignore
-        done
+        __append_lines_to .gitignore
         msg "added .gitignore"
         return
     fi
@@ -155,9 +161,7 @@ add_gitignore() {
     if ! command grep "$comment_line" .gitignore > /dev/null 2>&1; then
         echo >> .gitignore
         echo "$comment_line" >> .gitignore
-        for file in "${ignored_files[@]}"; do
-            echo "$file" >> .gitignore
-        done
+        __append_lines_to .gitignore
         msg "appended lines to .gitignore"
     fi
 }
