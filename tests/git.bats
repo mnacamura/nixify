@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # shellcheck source=git.sh
-source "$BATS_TEST_DIRNAME/../git.sh" >&2
+. "$BATS_TEST_DIRNAME/../git.sh" >&2
 
 setup() {
     tmpd="$(command mktemp -d --suffix "nixifytestgit")"

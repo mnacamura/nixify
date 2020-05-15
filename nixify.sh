@@ -13,7 +13,7 @@ pkg_native_build_inputs=()
 shell_build_inputs=()
 
 # shellcheck source=lib.sh
-source ./lib.sh
+. ./lib.sh
 
 while [ "$#" -gt 0 ]; do
     case "$1" in

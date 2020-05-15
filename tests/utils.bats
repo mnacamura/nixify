@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # shellcheck source=utils.sh
-source "$BATS_TEST_DIRNAME/../utils.sh" >&2
+. "$BATS_TEST_DIRNAME/../utils.sh" >&2
 
 @test "abbreviate \$HOME by ~" {
     local result HOME=/home/hoge
