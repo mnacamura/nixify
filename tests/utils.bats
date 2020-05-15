@@ -22,3 +22,16 @@ set -euo pipefail
     [ $? -eq 0 ]
     [ "$result" = /opt/home/hoge/huga/ ]
 }
+
+@test "join no items to empty" {
+   [ "$(join 'separator')" = "" ]
+}
+
+@test "join items by a separator of length more than one" {
+   [ "$(join 'aha' pen pineapple apple pen)" = "penahapineappleahaappleahapen" ]
+}
+
+@test "contains pen, doesn't contain apple pen" {
+    contains pen pineapple apple pen
+    ! contains 'apple pen' pineapple apple pen
+}

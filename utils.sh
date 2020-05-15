@@ -24,15 +24,15 @@ join() {
 }
 
 contains() {
-    local target="$1"
+    local it="$1"
     shift
 
-    local has_target
-    for elem in "$@"; do
-        if [ "$target" = "$elem" ]; then
-            has_target=yes
+    local has_it=
+    for item in "$@"; do
+        if [ "$it" = "$item" ]; then
+            has_it=yes
             break
         fi
     done
-    test -n "$has_target"
+    test -n "$has_it"
 }
