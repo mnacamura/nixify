@@ -25,6 +25,6 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/mnacamura/nixify/";
     license = licenses.mit;
     maintainers = with maintainers; [ mnacamura ];
-    platforms = platforms.all;
+    platforms = platforms.unix;
   };
 }
