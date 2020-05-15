@@ -1,5 +1,7 @@
 #!/usr/bin/env bats
 
+set -euo pipefail
+
 # shellcheck source=lib.sh
 source "$BATS_TEST_DIRNAME/../lib.sh" >&2
 

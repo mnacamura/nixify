@@ -1,5 +1,7 @@
 #!/usr/bin/env bats
 
+set -euo pipefail
+
 # shellcheck source=git.sh
 source "$BATS_TEST_DIRNAME/../git.sh" >&2
 

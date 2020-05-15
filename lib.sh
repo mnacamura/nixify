@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
-
 readonly nixify_name=nixify
 readonly nixify_version=0.2.1
 readonly nixify_description="\
