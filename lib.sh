@@ -119,8 +119,8 @@ guess_pkg_pname() {
     command basename "$PWD"
 }
 
-add_nix_file() {
-    local name="$1" template="$2"
+write_text() {
+    local name="$1" contents="$2"
 
     if [ -e "$name" ]; then
         local bk='~'
@@ -131,7 +131,7 @@ add_nix_file() {
         command mv "$name" "$name$bk"
     fi
 
-    echo -n "$template" > "$name"
+    echo -n "$contents" > "$name"
     msg "added $name"
 }
 

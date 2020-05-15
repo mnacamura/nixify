@@ -174,9 +174,9 @@ mkShell {
 }
 "
 
-add_nix_file pkg.nix "$pkg_nix_template"
-add_nix_file default.nix "$default_nix_template"
-add_nix_file shell.nix "$shell_nix_template"
+write_text pkg.nix "$pkg_nix_template"
+write_text default.nix "$default_nix_template"
+write_text shell.nix "$shell_nix_template"
 add_gitignore
 add_envrc
 direnv_allow
