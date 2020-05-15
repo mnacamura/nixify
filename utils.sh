@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 tildify() {
-    if [ -n "${HOME+defined}" ]; then
-        echo "$1" | command sed "s@^$HOME@~@"
-    else
+    if [ -z "${HOME+defined}" ]; then
         echo "$1"
         return 1
     fi
+
+    echo "$1" | command sed "s|^$HOME|~|"
 }
 
 join() {

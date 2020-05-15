@@ -6,21 +6,13 @@ set -euo pipefail
 . "$BATS_TEST_DIRNAME/../utils.sh" >&2
 
 @test "abbreviate \$HOME by ~" {
-    local result HOME=/home/hoge
-
-    result="$(tildify "$HOME/huga/")"
-
-    [ $? -eq 0 ]
-    [ "$result" = '~/huga/' ]
+    local HOME=/home/hoge
+    [ "$(tildify "$HOME/huga/")" = '~/huga/' ]
 }
 
 @test "do not abbreviate \$HOME inside path" {
-    local result HOME=/home/hoge
-
-    result="$(tildify "/opt$HOME/huga/")"
-
-    [ $? -eq 0 ]
-    [ "$result" = /opt/home/hoge/huga/ ]
+    local HOME=/home/hoge
+    [ "$(tildify "/opt$HOME/huga/")" = /opt/home/hoge/huga/ ]
 }
 
 @test "join no items to empty" {
