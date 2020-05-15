@@ -9,10 +9,18 @@ abbr_home() {
     fi
 }
 
-pkgs_join() {
-    local IFS="$1"
-    shift
-    echo "$*" | command sed 's/,/, /g'
+join() {
+    local sep="$1" result="$2"
+    shift; shift
+
+    if [ -z "$result" ]; then
+        return
+    fi
+
+    for item in "$@"; do
+        result="$result$sep$item"
+    done
+    echo "$result"
 }
 
 contains() {
