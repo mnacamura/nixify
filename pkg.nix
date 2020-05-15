@@ -1,4 +1,4 @@
-{ stdenv, coreutils, gnugrep, nix, makeWrapper }:
+{ stdenv, coreutils, gnugrep, nix, gawk, makeWrapper }:
 
 let
   inherit (stdenv.lib) makeBinPath;
@@ -10,14 +10,11 @@ stdenv.mkDerivation rec {
 
   src = ./.;
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ gawk makeWrapper ];
 
   buildInputs = [ coreutils gnugrep nix ];
 
-  dontConfigure = true;
-  dontBuild = true;
-
-  installFlags = [ "DEST=$(out)" "PREFIX=" ];
+  installFlags = [ "PREFIX=$(out)" ];
 
   preFixup = ''
     wrapProgram $out/bin/nixify --prefix PATH : "${makeBinPath buildInputs}"

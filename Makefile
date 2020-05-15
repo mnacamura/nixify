@@ -1,13 +1,18 @@
-DEST := ./_build
-PREFIX := /usr/local
+BUILD := _build
+PREFIX := $(HOME)/.local
 
-.PHONY: lint install clean
+.PHONY: build lint install clean
+
+build:
+	mkdir -p $(BUILD)/bin
+	gawk -f build.awk nixify.sh > $(BUILD)/bin/nixify
+	chmod +x $(BUILD)/bin/nixify
 
 lint:
-	shellcheck nixify.sh
+	shellcheck *.sh
 
-install:
-	install -D nixify.sh $(DEST)$(PREFIX)/bin/nixify
+install: build
+	install -D $(BUILD)/bin/nixify $(PREFIX)/bin/nixify
 
 clean:
-	rm -rf ./_build
+	rm -rf $(BUILD)
