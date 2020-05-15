@@ -12,7 +12,7 @@ check:
 	@bats tests/
 
 lint:
-	shellcheck *.sh tests/*.bats
+	@shellcheck *.sh tests/*.bats
 
 install: build
 	install -D $(BUILD)/bin/nixify $(PREFIX)/bin/nixify
