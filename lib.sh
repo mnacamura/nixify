@@ -8,8 +8,6 @@ A little tool to init nix and direnv environment.\
 
 # shellcheck source=utils.sh
 . utils.sh
-# shellcheck source=git.sh
-. git.sh
 
 show_usage() {
     echo "\
@@ -101,7 +99,7 @@ prefetch_nixpkgs() {
 cd_project_root() {
     local project_root git_root
 
-    if [ -n "${git_root:="$(find_git_root 2> /dev/null)"}" ]; then
+    if [ -n "${git_root:="$(gitroot)"}" ]; then
         msg "guess git repo root $(tildify "$git_root") is the project root"
         project_root="$git_root"
     else
@@ -138,7 +136,7 @@ add_nix_file() {
 }
 
 add_gitignore() {
-    if ! find_git_root > /dev/null 2>&1; then
+    if ! gitroot > /dev/null 2>&1; then
         return
     fi
 

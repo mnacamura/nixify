@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+gitroot() {
+    command git rev-parse --show-toplevel 2> /dev/null
+}
+
 tildify() {
     if [ -z "${HOME+defined}" ]; then
         echo "$1"
