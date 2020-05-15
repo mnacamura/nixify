@@ -1,18 +1,18 @@
-function slurp(line,    words) {
+function include_source_recursively(line,    words) {
     if ( line ~ /^\. / || line ~ /^source / ) {
         split(line, words)
         while ( (getline _line < words[2]) > 0 ) {
-            slurp(_line)
+            include_source_recursively(_line)
         }
     } else if ( NR != 1 && line ~ /^#!/ ) {
-        # Ignore shebang not in the first line
+        # Ignore shebang not at the first line
     } else if ( line ~ /^# shellcheck/ ) {
-        # Ignore comments of shellcheck annotation
+        # Ignore shellcheck annotations
     } else {
         print line
     }
 }
 
 {
-    slurp($0)
+    include_source_recursively($0)
 }
