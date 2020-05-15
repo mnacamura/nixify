@@ -24,3 +24,22 @@ teardown() {
     command rm -rf .git
     ! gitroot
 }
+
+@test "guess git root is the project root" {
+    mkdir -p x/y/z
+    pushd x/y/z
+    run cd_project_root
+
+    echo "$output" | command grep 'guess git repo root'
+    echo "$output" | command grep 'change working directory'
+}
+
+@test "guess current directory is the project root if not in git repo" {
+    command rm -rf .git
+    mkdir -p x/y/z
+    pushd x/y/z
+    run cd_project_root
+    popd
+
+    ! echo "$output" | command grep 'change working directory'
+}
