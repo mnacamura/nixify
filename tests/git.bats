@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-source lib.sh
+source "$BATS_TEST_DIRNAME/../lib.sh" >&2
 
 setup() {
     tmpd="$(command mktemp -d --suffix ${nixify_name}test)"

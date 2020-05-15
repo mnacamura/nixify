@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-source lib.sh
+source "$BATS_TEST_DIRNAME/../lib.sh" >&2
 
 @test "options in usage and help are consistent" {
     local in_usage in_help
