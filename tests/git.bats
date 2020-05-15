@@ -6,7 +6,7 @@ set -euo pipefail
 source "$BATS_TEST_DIRNAME/../git.sh" >&2
 
 setup() {
-    tmpd="$(command mktemp -d --suffix "${nixify_name}test")"
+    tmpd="$(command mktemp -d --suffix "nixifytestgit")"
     pushd "$tmpd" \
     && command git init
 }
