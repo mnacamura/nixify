@@ -8,7 +8,7 @@ set -euo pipefail
 @test "abbreviate \$HOME by ~" {
     local result HOME=/home/hoge
 
-    result="$(abbr_home "$HOME/huga/")"
+    result="$(tildify "$HOME/huga/")"
 
     [ $? -eq 0 ]
     [ "$result" = '~/huga/' ]
@@ -17,7 +17,7 @@ set -euo pipefail
 @test "do not abbreviate \$HOME inside path" {
     local result HOME=/home/hoge
 
-    result="$(abbr_home "/opt$HOME/huga/")"
+    result="$(tildify "/opt$HOME/huga/")"
 
     [ $? -eq 0 ]
     [ "$result" = /opt/home/hoge/huga/ ]

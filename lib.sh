@@ -102,7 +102,7 @@ cd_project_root() {
     local project_root git_root
 
     if [ -n "${git_root:="$(find_git_root 2> /dev/null)"}" ]; then
-        msg "guess git repo root $(abbr_home "$git_root") is the project root"
+        msg "guess git repo root $(tildify "$git_root") is the project root"
         project_root="$git_root"
     else
         msg "guess current directory is the project root"
@@ -110,7 +110,7 @@ cd_project_root() {
     fi
 
     if [ "$project_root" != "$PWD" ]; then
-        msg "change working directory to $(abbr_home "$project_root")"
+        msg "change working directory to $(tildify "$project_root")"
         if ! cd "$project_root"; then
             err "cannot change directory to $project_root"
         fi

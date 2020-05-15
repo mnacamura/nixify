@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-abbr_home() {
+tildify() {
     if [ -n "${HOME+defined}" ]; then
         echo "$1" | command sed "s@^$HOME@~@"
     else
