@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
-# shellcheck source=lib.sh
-source "$BATS_TEST_DIRNAME/../lib.sh" >&2
+# shellcheck source=git.sh
+source "$BATS_TEST_DIRNAME/../git.sh" >&2
 
 setup() {
     tmpd="$(command mktemp -d --suffix "${nixify_name}test")"
@@ -22,4 +22,3 @@ teardown() {
     command rm -rf .git
     ! find_git_root
 }
-

@@ -8,6 +8,11 @@ readonly nixify_description="\
 A little tool to init nix and direnv environment.\
 "
 
+# shellcheck source=utils.sh
+. utils.sh
+# shellcheck source=git.sh
+. git.sh
+
 show_usage() {
     echo "\
 Usage: $nixify_name \
@@ -95,24 +100,6 @@ prefetch_nixpkgs() {
     msg "...done! sha256 is $nixpkgs_sha256"
 }
 
-find_git_root() {
-    local path
-    path="$(command git rev-parse --absolute-git-dir 2> /dev/null)"
-    if [ -z "$path" ]; then
-       return 1
-    fi
-    echo "${path%\.git}"
-}
-
-abbr_home() {
-    if [ -n "${HOME+defined}" ]; then
-        echo "$1" | command sed "s@^$HOME@~@"
-    else
-        echo "$1"
-        return 1
-    fi
-}
-
 cd_project_root() {
     local project_root git_root
 
@@ -194,24 +181,4 @@ direnv_allow() {
     if ! command direnv allow; then
         warn "skipped executing 'direnv allow'"
     fi
-}
-
-pkgs_join() {
-    local IFS="$1"
-    shift
-    echo "$*" | command sed 's/,/, /g'
-}
-
-contains() {
-    local target="$1"
-    shift
-
-    local has_target
-    for elem in "$@"; do
-        if [ "$target" = "$elem" ]; then
-            has_target=yes
-            break
-        fi
-    done
-    test -n "$has_target"
 }

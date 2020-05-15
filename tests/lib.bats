@@ -49,21 +49,3 @@ source "$BATS_TEST_DIRNAME/../lib.sh" >&2
     echo "$output" | command grep 'prefetching'
     echo "$output" | command grep 'failed'
 }
-
-@test "abbreviate \$HOME by ~" {
-    local result HOME=/home/hoge
-
-    result="$(abbr_home "$HOME/huga/")"
-
-    [ $? -eq 0 ]
-    [ "$result" = '~/huga/' ]
-}
-
-@test "do not abbreviate \$HOME inside path" {
-    local result HOME=/home/hoge
-
-    result="$(abbr_home "/opt$HOME/huga/")"
-
-    [ $? -eq 0 ]
-    [ "$result" = /opt/home/hoge/huga/ ]
-}
