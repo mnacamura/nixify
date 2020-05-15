@@ -1,4 +1,4 @@
-{ stdenv, coreutils, gnugrep, nix, gawk, makeWrapper }:
+{ stdenv, coreutils, gnugrep, nix, gawk, bats, gitMinimal, makeWrapper }:
 
 let
   inherit (stdenv.lib) makeBinPath;
@@ -13,6 +13,10 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ gawk makeWrapper ];
 
   buildInputs = [ coreutils gnugrep nix ];
+
+  doCheck = true;
+
+  checkInputs = [ bats gitMinimal ];
 
   installFlags = [ "PREFIX=$(out)" ];
 
