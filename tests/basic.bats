@@ -26,10 +26,11 @@ source "$BATS_TEST_DIRNAME/../lib.sh" >&2
 
 @test "toggle colors" {
     local _color _alt_color
-
     _color="$nixify_color"
     toggle_nixify_color
     _alt_color="$nixify_color"
+
+    [ "$_color" != "$_alt_color" ]
 
     msg "toggle"
     [ "$nixify_color" = "$_color" ]
@@ -42,25 +43,27 @@ source "$BATS_TEST_DIRNAME/../lib.sh" >&2
 }
 
 @test "fail after prefetch failed" {
-    ! prefetch_nixpkgs invalidrevhash
+    run prefetch_nixpkgs invalidrevhash
+
+    [ ! "$status" -eq 0 ]
+    echo "$output" | command grep 'prefetching'
+    echo "$output" | command grep 'failed'
 }
 
 @test "abbreviate \$HOME by ~" {
-    local result
-    local HOME=/home/hoge
+    local result HOME=/home/hoge
 
     result="$(abbr_home "$HOME/huga/")"
-    [ $? -eq 0 ]
 
+    [ $? -eq 0 ]
     [ "$result" = '~/huga/' ]
 }
 
 @test "do not abbreviate \$HOME inside path" {
-    local result
-    local HOME=/home/hoge
+    local result HOME=/home/hoge
 
     result="$(abbr_home "/opt$HOME/huga/")"
-    [ $? -eq 0 ]
 
+    [ $? -eq 0 ]
     [ "$result" = /opt/home/hoge/huga/ ]
 }

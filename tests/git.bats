@@ -4,16 +4,14 @@
 source "$BATS_TEST_DIRNAME/../lib.sh" >&2
 
 setup() {
-    tmpd="$(command mktemp -d --suffix ${nixify_name}test)"
-    if pushd "$tmpd"; then
-        command git init
-    fi
+    tmpd="$(command mktemp -d --suffix "${nixify_name}test")"
+    pushd "$tmpd" \
+    && command git init
 }
 
 teardown() {
-    if popd; then
-        command rm -rf "$tmpd"
-    fi
+    popd \
+    && command rm -rf "$tmpd"
 }
 
 @test "ok if git root found" {
