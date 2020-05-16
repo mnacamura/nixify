@@ -12,8 +12,7 @@ setup() {
 }
 
 teardown() {
-    popd \
-    && command rm -rf "$tmpd"
+    command rm -rf "$tmpd"
 }
 
 @test "ok if git root found" {
@@ -43,6 +42,7 @@ teardown() {
     mkdir -p x/y/z
     pushd x/y/z
     run cd_project_root
+    popd
 
     echo "$output" | command grep 'guess git repo root'
     echo "$output" | command grep 'change working directory'
@@ -57,6 +57,7 @@ teardown() {
     run cd_project_root
     popd
 
+    echo "$output" | command grep 'guess current directory'
     ! echo "$output" | command grep 'change working directory'
 }
 

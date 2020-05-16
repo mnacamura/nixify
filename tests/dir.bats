@@ -11,8 +11,7 @@ setup() {
 }
 
 teardown() {
-    popd \
-    && command rm -rf "$tmpd"
+    command rm -rf "$tmpd"
 }
 
 @test "write text to a file" {
