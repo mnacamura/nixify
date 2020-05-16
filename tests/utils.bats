@@ -27,3 +27,7 @@ set -euo pipefail
     contains pen pineapple apple pen
     ! contains 'apple pen' pineapple apple pen
 }
+
+@test "items are different from each other" {
+    [ "$(unique a a b b c d a a d b d c)" = "a b c d" ]
+}

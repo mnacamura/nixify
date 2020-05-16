@@ -40,3 +40,13 @@ contains() {
     done
     test -n "$has_it"
 }
+
+unique() {
+    local item coll=()
+    for item in "$@"; do
+        if ! contains "$item" "${coll[@]}"; then
+            coll+=("$item")
+        fi
+    done
+    echo "${coll[*]}"
+}

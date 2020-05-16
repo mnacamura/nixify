@@ -38,12 +38,10 @@ cd_project_root
 : "${pkg_version:=0.1}"
 
 pkg_common_build_inputs=()
-for pkg in "${pkg_build_inputs[@]}" \
-           "${pkg_native_build_inputs[@]}"
+for pkg in $(unique "${pkg_build_inputs[@]}" \
+                    "${pkg_native_build_inputs[@]}")
 do
-    if ! contains "$pkg" "${pkg_common_build_inputs[@]}"; then
-        pkg_common_build_inputs+=("$pkg")
-    fi
+    pkg_common_build_inputs+=("$pkg")
 done
 
 if [ -n "$is_meowing" ]; then
