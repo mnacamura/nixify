@@ -58,3 +58,17 @@ set -euo pipefail
     [ "${pkg_native_build_inputs[*]}" = "c d e C D E" ]
     [ "${shell_build_inputs[*]}" = "e f E F" ]
 }
+
+@test "project_root is set" {
+    local project_root=
+
+    parse_args dest -p a b c
+    [ "$project_root" = dest ]
+}
+
+@test "project_root is correctly set using --" {
+    local project_root=
+
+    parse_args -p a b c -- dest
+    [ "$project_root" = dest ]
+}

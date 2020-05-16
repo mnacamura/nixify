@@ -76,92 +76,108 @@ err() {
 }
 
 parse_args() {
+    local ignore_options=
+
     while [ "$#" -gt 0 ]; do
-        case "$1" in
-            -r|--rev)
-                nixpkgs_rev="$2"
-                shift 2
-                ;;
-            --sha256)
-                nixpkgs_sha256="$2"
-                shift 2
-                ;;
-            -n|--pname)
-                pkg_pname="$2"
-                shift 2
-                ;;
-            -v|--version)
-                pkg_version="$2"
-                shift 2
-                ;;
-            -p|--build-inputs)
-                shift
-                while [ "$#" -gt 0 ]; do
-                    case "$1" in
-                        -*)
-                            break
-                            ;;
-                        *)
-                            pkg_build_inputs+=("$1")
-                            shift
-                            ;;
-                    esac
-                done
-                ;;
-            -P|--native-build-inputs)
-                shift
-                while [ "$#" -gt 0 ]; do
-                    case "$1" in
-                        -*)
-                            break
-                            ;;
-                        *)
-                            pkg_native_build_inputs+=("$1")
-                            shift
-                            ;;
-                    esac
-                done
-                ;;
-            -s|--shell-build-inputs)
-                shift
-                while [ "$#" -gt 0 ]; do
-                    case "$1" in
-                        -*)
-                            break
-                            ;;
-                        *)
-                            shell_build_inputs+=("$1")
-                            shift
-                            ;;
-                    esac
-                done
-                ;;
-            -h|--help)
-                show_help
-                exit
-                ;;
-            -V)
-                show_version
-                exit
-                ;;
-            --meow-meow)
-                is_meowing=yes
-                shift
-                ;;
-            -*)
-                show_usage
-                exit 1
-                ;;
-            *)
-                if [ -z "$project_root" ]; then
-                    project_root="$1"
+        if [ -z "$ignore_options" ]; then
+            case "$1" in
+                --)
+                    ignore_options=yes
                     shift
-                else
+                    ;;
+                -r|--rev)
+                    nixpkgs_rev="$2"
+                    shift 2
+                    ;;
+                --sha256)
+                    nixpkgs_sha256="$2"
+                    shift 2
+                    ;;
+                -n|--pname)
+                    pkg_pname="$2"
+                    shift 2
+                    ;;
+                -v|--version)
+                    pkg_version="$2"
+                    shift 2
+                    ;;
+                -p|--build-inputs)
+                    shift
+                    while [ "$#" -gt 0 ]; do
+                        case "$1" in
+                            -*)
+                                break
+                                ;;
+                            *)
+                                pkg_build_inputs+=("$1")
+                                shift
+                                ;;
+                        esac
+                    done
+                    ;;
+                -P|--native-build-inputs)
+                    shift
+                    while [ "$#" -gt 0 ]; do
+                        case "$1" in
+                            -*)
+                                break
+                                ;;
+                            *)
+                                pkg_native_build_inputs+=("$1")
+                                shift
+                                ;;
+                        esac
+                    done
+                    ;;
+                -s|--shell-build-inputs)
+                    shift
+                    while [ "$#" -gt 0 ]; do
+                        case "$1" in
+                            -*)
+                                break
+                                ;;
+                            *)
+                                shell_build_inputs+=("$1")
+                                shift
+                                ;;
+                        esac
+                    done
+                    ;;
+                -h|--help)
+                    show_help
+                    exit
+                    ;;
+                -V)
+                    show_version
+                    exit
+                    ;;
+                --meow-meow)
+                    is_meowing=yes
+                    shift
+                    ;;
+                -*)
                     show_usage
                     exit 1
-                fi
-                ;;
-        esac
+                    ;;
+                *)
+                    if [ -z "$project_root" ]; then
+                        project_root="$1"
+                        shift
+                    else
+                        show_usage
+                        exit 1
+                    fi
+                    ;;
+            esac
+        else
+            if [ -z "$project_root" ]; then
+                project_root="$1"
+                shift
+            else
+                show_usage
+                exit 1
+            fi
+        fi
     done
 }
 
