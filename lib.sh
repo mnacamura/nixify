@@ -19,7 +19,8 @@ Usage: $nixify_name \
 [-P|--native-build-inputs [PKG...]] \
 [-s|--shell-build-inputs [PKG...]] \
 [-h|--help] \
-[-V]\
+[-V] \
+[DEST]\
 "
 }
 
@@ -37,7 +38,10 @@ Options:
     -P, --native-build-inputs [PKG...]  set packages in nativeBuildInputs
     -s, --shell-build-inputs [PKG...]   set packages in buildInputs of shell.nix
     -h, --help                          show help
-    -V                                  show program version\
+    -V                                  show program version
+
+Arguments:
+    DEST                                install files into DEST (optional)\
 "
 }
 
@@ -144,9 +148,18 @@ parse_args() {
                 is_meowing=yes
                 shift
                 ;;
-            *)
+            -*)
                 show_usage
                 exit 1
+                ;;
+            *)
+                if [ -z "$project_root" ]; then
+                    project_root="$1"
+                    shift
+                else
+                    show_usage
+                    exit 1
+                fi
                 ;;
         esac
     done
@@ -178,9 +191,12 @@ prefetch_nixpkgs() {
 }
 
 cd_project_root() {
-    local project_root git_root
+    local git_root
 
-    if [ -n "${git_root:="$(gitroot)"}" ]; then
+    if [ -n "$project_root" ]; then
+        # project_root is explicitly specified, no guess
+        true
+    elif [ -n "${git_root:="$(gitroot)"}" ]; then
         msg "guess git repo root $(tildify "$git_root") is the project root"
         project_root="$git_root"
     else

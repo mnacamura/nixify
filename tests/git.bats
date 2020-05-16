@@ -25,7 +25,21 @@ teardown() {
     ! gitroot
 }
 
+@test "no guess if dest is specified" {
+    local project_root=x/y
+
+    mkdir -p x/y/z
+    run cd_project_root
+
+    ! echo "$output" | command grep 'guess current directory'
+    ! echo "$output" | command grep 'guess git repo root'
+    echo "$output" | command grep 'change working directory'
+    ! echo "$output" | command grep 'cannot change directory'
+}
+
 @test "guess git root is the project root" {
+    local project_root=
+
     mkdir -p x/y/z
     pushd x/y/z
     run cd_project_root
@@ -35,6 +49,8 @@ teardown() {
 }
 
 @test "guess current directory is the project root if not in git repo" {
+    local project_root=
+
     command rm -rf .git
     mkdir -p x/y/z
     pushd x/y/z

@@ -5,7 +5,6 @@
 - Add integration tests
 - Add shell completions (fish, bash, zsh)
 - Enable to use custom templates?
-- Enable to specify the project directory
 - Revert to initial state after aborting:
     1. First, install files to a temporal directory.
     2. If everything is OK, install the files in the temporal directory to the
@@ -14,6 +13,9 @@
 
 ## Unstable version
 
+### Added
+
+- Ability to specify installation destination
 
 ## [0.3.1](https://github.com/mnacamura/nixify/tree/0.3.1) (2020-05-16)
 

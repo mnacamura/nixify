@@ -12,6 +12,8 @@ pkg_native_build_inputs=()
 
 shell_build_inputs=()
 
+project_root=
+
 is_meowing=
 
 # shellcheck source=lib.sh
