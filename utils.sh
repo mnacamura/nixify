@@ -21,6 +21,7 @@ join() {
         return
     fi
 
+    local item
     for item in "$@"; do
         result="$result$sep$item"
     done
@@ -31,7 +32,7 @@ contains() {
     local it="$1"
     shift
 
-    local has_it=
+    local item has_it=
     for item in "$@"; do
         if [ "$it" = "$item" ]; then
             has_it=yes

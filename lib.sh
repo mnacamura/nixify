@@ -228,6 +228,7 @@ add_gitignore() {
     ignored_entries=(.direnv result)
 
     __append_lines_to() {
+        local entry
         for entry in "${ignored_entries[@]}"; do
             echo "$entry" >> "$1"
         done
