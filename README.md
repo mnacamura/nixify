@@ -1,5 +1,7 @@
 # nixify
 
+[![Build Status](https://travis-ci.org/mnacamura/nixify.svg?branch=master)](https://travis-ci.org/mnacamura/nixify)
+
 A little tool to init nix and direnv environment, inspired by some nixify
 precedents.
 
