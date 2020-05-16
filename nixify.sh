@@ -12,8 +12,23 @@ pkg_native_build_inputs=()
 
 shell_build_inputs=()
 
+is_meowing=
+
 # shellcheck source=lib.sh
 . ./lib.sh
+
+dump_state() {
+    echo "\
+nixpkgs_rev: $nixpkgs_rev
+nixpkgs_sha256: $nixpkgs_sha256
+pkg_pname: $pkg_pname
+pkg_version: $pkg_version
+pkg_build_inputs: ${pkg_build_inputs[*]}
+pkg_native_build_inputs: ${pkg_native_build_inputs[*]}
+pkg_common_build_inputs: ${pkg_common_build_inputs[*]}
+shell_build_inputs: ${shell_build_inputs[*]}\
+"
+}
 
 while [ "$#" -gt 0 ]; do
     case "$1" in
@@ -83,6 +98,10 @@ while [ "$#" -gt 0 ]; do
             show_version
             exit
             ;;
+        --meow-meow)
+            is_meowing=yes
+            shift
+            ;;
         *)
             show_usage
             exit 1
@@ -103,6 +122,11 @@ do
         pkg_common_build_inputs+=("$pkg")
     fi
 done
+
+if [ -n "$is_meowing" ]; then
+    dump_state
+    exit
+fi
 
 nix_header="\
 { pkgs ? import <nixpkgs> {} }:
