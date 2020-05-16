@@ -1,21 +1,21 @@
-BUILD := _build
 PREFIX := $(HOME)/.local
 
-.PHONY: build check lint install clean
+.PHONY: check lint install clean
 
-build:
-	mkdir -p $(BUILD)/bin
-	gawk -f build.awk nixify.sh > $(BUILD)/bin/nixify
-	chmod +x $(BUILD)/bin/nixify
+_build/bin/nixify:
+	mkdir -p _build/bin
+	gawk -f build.awk nixify.sh > _build/bin/nixify
+	chmod +x _build/bin/nixify
 
-check:
+
+check: _build/bin/nixify
 	@bats tests/
 
 lint:
 	@shellcheck *.sh tests/*.bats
 
-install: build
-	install -D $(BUILD)/bin/nixify $(PREFIX)/bin/nixify
+install: _build/bin/nixify
+	install -D _build/bin/nixify $(PREFIX)/bin/nixify
 
 clean:
-	rm -rf $(BUILD)
+	rm -rf _build
