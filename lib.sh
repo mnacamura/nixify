@@ -137,22 +137,20 @@ write_text() {
 
 add_gitignore() {
     local git_root gitignore
-
     if [ -z "${git_root:=$(gitroot)}" ]; then
         return
     fi
-
     gitignore="$git_root/.gitignore"
 
-    local comment_line ignored_files
+    local comment_line ignored_entries
     comment_line="# Nix and direnv stuff"
-    ignored_files=(.direnv result)
+    ignored_entries=(.direnv result)
 
     __append_lines_to() {
-        for file in "${ignored_files[@]}"; do
-            echo "$file" >> "$1"
+        for entry in "${ignored_entries[@]}"; do
+            echo "$entry" >> "$1"
         done
-        unset -f __append_lines
+        unset -f __append_lines_to
     }
 
     if [ ! -e "$gitignore" ]; then
@@ -162,12 +160,14 @@ add_gitignore() {
         return
     fi
 
-    if ! command grep "$comment_line" "$gitignore" > /dev/null 2>&1; then
-        echo >> "$gitignore"
-        echo "$comment_line" >> "$gitignore"
-        __append_lines_to "$gitignore"
-        msg "appended lines to .gitignore"
+    if command grep "$comment_line" "$gitignore" > /dev/null 2>&1; then
+        return
     fi
+
+    echo >> "$gitignore"
+    echo "$comment_line" >> "$gitignore"
+    __append_lines_to "$gitignore"
+    msg "appended lines to .gitignore"
 }
 
 add_envrc() {

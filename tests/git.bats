@@ -61,6 +61,18 @@ teardown() {
     command cat .gitignore | command grep result
 }
 
+@test "do not append lines to .gitignore if .gitignore contains the lines" {
+    command cat > .gitignore <<EOF
+# Nix and direnv stuff
+.direnv
+result
+EOF
+    run add_gitignore
+    [ "$status" -eq 0 ]
+    ! echo "$output" | command grep "appended lines to .gitignore"
+    command cat .gitignore | command grep "# Nix and direnv stuff"
+}
+
 @test "append lines to .gitignore if .gitignore exists" {
     echo "pen pineapple" > .gitignore
     run add_gitignore
