@@ -15,7 +15,7 @@ shell_build_inputs=()
 is_meowing=
 
 # shellcheck source=lib.sh
-. ./lib.sh
+. lib.sh
 
 dump_state() {
     echo "\
