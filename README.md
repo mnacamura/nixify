@@ -17,6 +17,9 @@ Usage: nixify [-r|--rev REV [--sha256 SHA256]] [-n|--pname NAME] [-v|--version V
 
 A little tool to init nix and direnv environment.
 
+Arguments:
+    DEST                                install files into DEST (optional)
+
 Options:
     -r, --rev REV                       pin nixpkgs to revision hash REV
         --sha256 SHA256                 sha256 checksum of the pinned nixpkgs (optional)
@@ -25,11 +28,10 @@ Options:
     -p, --build-inputs [PKG...]         set packages in buildInputs
     -P, --native-build-inputs [PKG...]  set packages in nativeBuildInputs
     -s, --shell-build-inputs [PKG...]   set packages in buildInputs of shell.nix
+
+Flags:
     -h, --help                          show help
     -V                                  show program version
-
-Arguments:
-    DEST                                install files into DEST (optional)
 ```
 
 ## Installation

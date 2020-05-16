@@ -29,6 +29,9 @@ show_help() {
     echo "
 $nixify_description
 
+Arguments:
+    DEST                                install files into DEST (optional)
+
 Options:
     -r, --rev REV                       pin nixpkgs to revision hash REV
         --sha256 SHA256                 sha256 checksum of the pinned nixpkgs (optional)
@@ -37,11 +40,10 @@ Options:
     -p, --build-inputs [PKG...]         set packages in buildInputs
     -P, --native-build-inputs [PKG...]  set packages in nativeBuildInputs
     -s, --shell-build-inputs [PKG...]   set packages in buildInputs of shell.nix
-    -h, --help                          show help
-    -V                                  show program version
 
-Arguments:
-    DEST                                install files into DEST (optional)\
+Flags:
+    -h, --help                          show help
+    -V                                  show program version\
 "
 }
 
