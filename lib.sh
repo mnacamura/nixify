@@ -71,6 +71,87 @@ err() {
     exit 1
 }
 
+parse_args() {
+    while [ "$#" -gt 0 ]; do
+        case "$1" in
+            -r|--rev)
+                nixpkgs_rev="$2"
+                shift 2
+                ;;
+            --sha256)
+                nixpkgs_sha256="$2"
+                shift 2
+                ;;
+            -n|--pname)
+                pkg_pname="$2"
+                shift 2
+                ;;
+            -v|--version)
+                pkg_version="$2"
+                shift 2
+                ;;
+            -p|--build-inputs)
+                shift
+                while [ "$#" -gt 0 ]; do
+                    case "$1" in
+                        -*)
+                            break
+                            ;;
+                        *)
+                            pkg_build_inputs+=("$1")
+                            shift
+                            ;;
+                    esac
+                done
+                ;;
+            -P|--native-build-inputs)
+                shift
+                while [ "$#" -gt 0 ]; do
+                    case "$1" in
+                        -*)
+                            break
+                            ;;
+                        *)
+                            pkg_native_build_inputs+=("$1")
+                            shift
+                            ;;
+                    esac
+                done
+                ;;
+            -s|--shell-build-inputs)
+                shift
+                while [ "$#" -gt 0 ]; do
+                    case "$1" in
+                        -*)
+                            break
+                            ;;
+                        *)
+                            shell_build_inputs+=("$1")
+                            shift
+                            ;;
+                    esac
+                done
+                ;;
+            -h|--help)
+                show_help
+                exit
+                ;;
+            -V)
+                show_version
+                exit
+                ;;
+            --meow-meow)
+                is_meowing=yes
+                shift
+                ;;
+            *)
+                show_usage
+                exit 1
+                ;;
+        esac
+    done
+}
+
 prefetch_nixpkgs() {
     local rev="$1"
 
