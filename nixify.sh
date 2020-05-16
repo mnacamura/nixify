@@ -34,19 +34,19 @@ while [ "$#" -gt 0 ]; do
     case "$1" in
         -r|--rev)
             nixpkgs_rev="$2"
-            shift; shift
+            shift 2
             ;;
         --sha256)
             nixpkgs_sha256="$2"
-            shift; shift
+            shift 2
             ;;
         -n|--pname)
             pkg_pname="$2"
-            shift; shift
+            shift 2
             ;;
         -v|--version)
             pkg_version="$2"
-            shift; shift
+            shift 2
             ;;
         -p|--build-inputs)
             shift

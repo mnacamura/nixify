@@ -15,7 +15,7 @@ tildify() {
 
 join() {
     local sep="$1" result="$2"
-    shift; shift
+    shift 2
 
     if [ -z "$result" ]; then
         return
