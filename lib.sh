@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 readonly nixify_name=nixify
-readonly nixify_version=0.2.1
+readonly nixify_version=0.3
 readonly nixify_description="\
 A little tool to init nix and direnv environment.\
 "
