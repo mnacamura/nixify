@@ -34,7 +34,7 @@ teardown() {
     run add_envrc
     [ "$status" -eq 0 ]
     echo "$output" | command grep "added .envrc"
-    command grep "use nix" .envrc
+    command grep "^use nix$" .envrc
 }
 
 @test "append 'use nix' to existing .envrc" {
@@ -43,5 +43,13 @@ teardown() {
     [ "$status" -eq 0 ]
     echo "$output" | command grep "appended 'use nix' to .envrc"
     command grep "hello" .envrc
-    command grep "use nix" .envrc
+    command grep "^use nix$" .envrc
+}
+
+@test "do not append 'use nix' if .envrc contains it" {
+    echo 'use nix' > .envrc
+    run add_envrc
+    [ "$status" -eq 0 ]
+    ! echo "$output" | command grep "appended 'use nix' to .envrc"
+    command grep "^use nix$" .envrc
 }

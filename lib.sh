@@ -177,10 +177,12 @@ add_envrc() {
         return
     fi
 
-    if ! command grep 'use nix' .envrc > /dev/null 2>&1; then
-        echo "use nix" >> .envrc
-        msg "appended 'use nix' to .envrc"
+    if command grep 'use nix' .envrc > /dev/null 2>&1; then
+        return
     fi
+
+    echo "use nix" >> .envrc
+    msg "appended 'use nix' to .envrc"
 }
 
 direnv_allow() {
