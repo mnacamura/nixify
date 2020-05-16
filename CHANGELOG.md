@@ -14,6 +14,9 @@
 
 ## Unstable version
 
+
+## [0.3.1](https://github.com/mnacamura/nixify/tree/0.3.1) (2020-05-16)
+
 ### Fixed
 
 - Spacing after comma in `pkg.nix`'s header
