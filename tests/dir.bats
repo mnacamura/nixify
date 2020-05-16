@@ -29,3 +29,19 @@ teardown() {
     command grep "bow bow" b.txt
     [ -e "b.txt~~" ]
 }
+
+@test "add .envrc" {
+    run add_envrc
+    [ "$status" -eq 0 ]
+    echo "$output" | command grep "added .envrc"
+    command grep "use nix" .envrc
+}
+
+@test "append 'use nix' to existing .envrc" {
+    echo hello > .envrc
+    run add_envrc
+    [ "$status" -eq 0 ]
+    echo "$output" | command grep "appended 'use nix' to .envrc"
+    command grep "hello" .envrc
+    command grep "use nix" .envrc
+}
