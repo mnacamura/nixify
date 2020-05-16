@@ -14,13 +14,15 @@ set -euo pipefail
                | command sed 's_^\[\(.\+\)\]$_\1_' \
                | command sed 's_\[_\n[_' \
                | command sed 's_^\[\(.\+\)\]$_\1_' \
-               | command sed '/^-/!d' \
+               | command sed '/^\(-\|DEST\)/!d' \
                | command awk '{ print $1 }' \
+               | command sort
                )"
     in_help="$(show_help \
-              | command sed '/^ *-/!d' \
+              | command sed '/^ *\(-\|DEST\)/!d' \
               | command sed 's_, -_|-_' \
               | command awk '{ print $1 }' \
+              | command sort
               )"
 
     [ "$in_usage" = "$in_help" ]
