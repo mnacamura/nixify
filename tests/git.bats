@@ -52,7 +52,9 @@ teardown() {
 }
 
 @test "add .gitignore in git repo" {
+    mkdir x && pushd x
     run add_gitignore
+    popd
     [ "$status" -eq 0 ]
     echo "$output" | command grep "added .gitignore"
     command cat .gitignore | command grep .direnv
