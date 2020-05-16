@@ -143,7 +143,7 @@ with pkgs;
 fi
 
 pkg_nix_template="\
-{ $(join ',' stdenv "${pkg_common_build_inputs[@]}") }:
+{ $(join ', ' stdenv "${pkg_common_build_inputs[@]}") }:
 
 stdenv.mkDerivation rec {
   pname = \"$pkg_pname\";
