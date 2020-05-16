@@ -67,4 +67,6 @@ teardown() {
     [ "$status" -eq 0 ]
     echo "$output" | command grep "appended lines to .gitignore"
     command cat .gitignore | command grep 'pen pineapple'
+    command cat .gitignore | command grep .direnv
+    command cat .gitignore | command grep result
 }
