@@ -2,9 +2,9 @@
 
 ## TODO
 
+- Add integration tests
 - Add shell completions (fish, bash, zsh)
 - Enable to use custom templates?
-- Add tests (using `bats`?)
 - Enable to specify the project directory
 - Revert to initial state after aborting:
     1. First, install files to a temporal directory.
@@ -29,6 +29,7 @@
 ### Internal
 
 - Rewritten in bash
+- Added unit tests
 
 ## [0.2.1](https://github.com/mnacamura/nixify/tree/0.2.1) (2020-05-10)
 
