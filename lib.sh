@@ -177,7 +177,7 @@ add_envrc() {
         return
     fi
 
-    if command grep 'use nix' .envrc > /dev/null 2>&1; then
+    if command grep '^use nix$' .envrc > /dev/null 2>&1; then
         return
     fi
 
