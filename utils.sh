@@ -13,7 +13,7 @@ tildify() {
     echo "$1" | sed "s|^$HOME|~|"
 }
 
-join() {
+strjoin() {
     local sep="$1" result="${2-}"
     shift 2
 

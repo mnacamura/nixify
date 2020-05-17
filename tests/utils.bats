@@ -23,14 +23,14 @@ teardown() {
 
 @test "join no items to empty" {
     # Below somehow passes even with 'set -u'
-    # [ -z "$(join separator)" ]
+    # [ -z "$(strjoin separator)" ]
     local result
-    result="$(join separator)"
+    result="$(strjoin separator)"
     [ -z "$result" ]
 }
 
 @test "join items by a separator of length more than one" {
-   [ "$(join 'aha' pen pineapple apple pen)" = "penahapineappleahaappleahapen" ]
+   [ "$(strjoin 'aha' pen pineapple apple pen)" = "penahapineappleahaappleahapen" ]
 }
 
 @test "contains pen, doesn't contain apple pen" {

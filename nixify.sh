@@ -90,7 +90,7 @@ with pkgs;
 fi
 
 pkg_nix_template="\
-{ $(join ', ' stdenv "${pkg_common_build_inputs[@]}") }:
+{ $(strjoin ', ' stdenv "${pkg_common_build_inputs[@]}") }:
 
 stdenv.mkDerivation rec {
   pname = \"$pkg_pname\";
@@ -98,9 +98,9 @@ stdenv.mkDerivation rec {
 
   src = ./.;
 
-  nativeBuildInputs = [ $(join ' ' "${pkg_native_build_inputs[@]}") ];
+  nativeBuildInputs = [ $(strjoin ' ' "${pkg_native_build_inputs[@]}") ];
 
-  buildInputs = [ $(join ' ' "${pkg_build_inputs[@]}") ];
+  buildInputs = [ $(strjoin ' ' "${pkg_build_inputs[@]}") ];
 }
 "
 
@@ -114,7 +114,7 @@ $nix_header
 mkShell {
   inputsFrom = [ (callPackage ./pkg.nix {}) ];
 
-  buildInputs = [ $(join ' ' "${shell_build_inputs[@]}") ];
+  buildInputs = [ $(strjoin ' ' "${shell_build_inputs[@]}") ];
 
   shellHook = ''
   '';
