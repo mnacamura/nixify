@@ -22,7 +22,11 @@ teardown() {
 }
 
 @test "join no items to empty" {
-   [ "$(join 'separator')" = "" ]
+    # Below somehow passes even with 'set -u'
+    # [ -z "$(join separator)" ]
+    local result
+    result="$(join separator)"
+    [ -z "$result" ]
 }
 
 @test "join items by a separator of length more than one" {
