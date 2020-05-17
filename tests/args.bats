@@ -1,9 +1,15 @@
 #!/usr/bin/env bats
 
-set -euo pipefail
-
 # shellcheck source=lib.sh
 . "$BATS_TEST_DIRNAME/../lib.sh" >&2
+
+setup() {
+    set -uo pipefail
+}
+
+teardown() {
+    set +uo pipefail
+}
 
 @test "nixpkgs_rev is set" {
     local nixpkgs_rev

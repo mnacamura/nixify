@@ -1,9 +1,15 @@
 #!/usr/bin/env bats
 
-set -euo pipefail
-
 # shellcheck source=lib.sh
 . "$BATS_TEST_DIRNAME/../lib.sh" >&2
+
+setup() {
+    set -uo pipefail
+}
+
+teardown() {
+    set +uo pipefail
+}
 
 @test "options in usage and help are consistent" {
     local in_usage in_help

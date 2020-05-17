@@ -1,17 +1,17 @@
 #!/usr/bin/env bats
 
-set -euo pipefail
-
 # shellcheck source=lib.sh
 . "$BATS_TEST_DIRNAME/../lib.sh" >&2
 
 setup() {
+    set -uo pipefail
     tmpd="$(mktemp -d --suffix "nixifytestdir")"
     pushd "$tmpd"
 }
 
 teardown() {
     rm -rf "$tmpd"
+    set +uo pipefail
 }
 
 @test "write text to a file" {

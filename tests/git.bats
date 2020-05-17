@@ -1,11 +1,10 @@
 #!/usr/bin/env bats
 
-set -euo pipefail
-
 # shellcheck source=lib.sh
 . "$BATS_TEST_DIRNAME/../lib.sh" >&2
 
 setup() {
+    set -uo pipefail
     tmpd="$(mktemp -d --suffix "nixifytestgit")"
     pushd "$tmpd" \
     && git init
@@ -13,6 +12,7 @@ setup() {
 
 teardown() {
     rm -rf "$tmpd"
+    set +uo pipefail
 }
 
 @test "ok if git root found" {

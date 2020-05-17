@@ -1,9 +1,15 @@
 #!/usr/bin/env bats
 
-set -euo pipefail
-
 # shellcheck source=utils.sh
 . "$BATS_TEST_DIRNAME/../utils.sh" >&2
+
+setup() {
+    set -uo pipefail
+}
+
+teardown() {
+    set +uo pipefail
+}
 
 @test "abbreviate \$HOME by ~" {
     local HOME=/home/hoge
