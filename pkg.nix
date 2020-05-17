@@ -1,4 +1,4 @@
-{ stdenv, coreutils, gnugrep, nix, gawk, bats, gitMinimal, makeWrapper }:
+{ stdenv, coreutils, gnugrep, nix, bats, gitMinimal, makeWrapper }:
 
 let
   inherit (stdenv.lib) makeBinPath;
@@ -10,7 +10,7 @@ stdenv.mkDerivation rec {
 
   src = ./.;
 
-  nativeBuildInputs = [ gawk makeWrapper ];
+  nativeBuildInputs = [ makeWrapper ];
 
   buildInputs = [ coreutils gnugrep nix ];
 
