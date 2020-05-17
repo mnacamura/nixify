@@ -186,24 +186,24 @@ parse_args() {
 prefetch_nixpkgs() {
     local rev="$1"
 
-    nixpkgs_sha256_memo="$(command mktemp --suffix "$nixify_name")"
+    nixpkgs_sha256_memo="$(mktemp --suffix "$nixify_name")"
 
     __prefetch_cleanup() {
-        command rm -f "$nixpkgs_sha256_memo"
+        rm -f "$nixpkgs_sha256_memo"
         unset nixpkgs_sha256_memo
         unset -f __prefetch_cleanup
     }
 
     msg "prefetching nixpkgs rev $rev..."
     local url="https://github.com/NixOS/nixpkgs/archive/$rev.tar.gz"
-    if ! command nix-prefetch-url --type sha256 --unpack "$url" \
-       | command tee "$nixpkgs_sha256_memo" 1> /dev/null
+    if ! nix-prefetch-url --type sha256 --unpack "$url" \
+       | tee "$nixpkgs_sha256_memo" 1> /dev/null
     then
         warn "...failed"
         __prefetch_cleanup
         return 1
     fi
-    nixpkgs_sha256="$(command cat "$nixpkgs_sha256_memo")"
+    nixpkgs_sha256="$(cat "$nixpkgs_sha256_memo")"
     __prefetch_cleanup
     msg "...done! sha256 is $nixpkgs_sha256"
 }
@@ -231,7 +231,7 @@ cd_project_root() {
 }
 
 guess_pkg_pname() {
-    command basename "$PWD"
+    basename "$PWD"
 }
 
 write_text() {
@@ -243,7 +243,7 @@ write_text() {
             bk="$bk$bk"
         done
         warn "$name exists; renamed to $name$bk"
-        command mv "$name" "$name$bk"
+        mv "$name" "$name$bk"
     fi
 
     echo -n "$contents" > "$name"
@@ -276,7 +276,7 @@ add_gitignore() {
         return
     fi
 
-    if command grep "$comment_line" "$gitignore" > /dev/null 2>&1; then
+    if grep "$comment_line" "$gitignore" > /dev/null 2>&1; then
         return
     fi
 
@@ -293,7 +293,7 @@ add_envrc() {
         return
     fi
 
-    if command grep '^use nix$' .envrc > /dev/null 2>&1; then
+    if grep '^use nix$' .envrc > /dev/null 2>&1; then
         return
     fi
 
@@ -302,7 +302,7 @@ add_envrc() {
 }
 
 direnv_allow() {
-    if ! command direnv allow; then
+    if ! direnv allow; then
         warn "skipped executing 'direnv allow'"
     fi
 }

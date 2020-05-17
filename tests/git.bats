@@ -6,13 +6,13 @@ set -euo pipefail
 . "$BATS_TEST_DIRNAME/../lib.sh" >&2
 
 setup() {
-    tmpd="$(command mktemp -d --suffix "nixifytestgit")"
+    tmpd="$(mktemp -d --suffix "nixifytestgit")"
     pushd "$tmpd" \
-    && command git init
+    && git init
 }
 
 teardown() {
-    command rm -rf "$tmpd"
+    rm -rf "$tmpd"
 }
 
 @test "ok if git root found" {
@@ -20,7 +20,7 @@ teardown() {
 }
 
 @test "fail if git root not found" {
-    command rm -rf .git
+    rm -rf .git
     ! gitroot
 }
 
@@ -30,10 +30,10 @@ teardown() {
     mkdir -p x/y/z
     run cd_project_root
 
-    ! echo "$output" | command grep 'guess current directory'
-    ! echo "$output" | command grep 'guess git repo root'
-    echo "$output" | command grep 'change working directory'
-    ! echo "$output" | command grep 'cannot change directory'
+    ! echo "$output" | grep 'guess current directory'
+    ! echo "$output" | grep 'guess git repo root'
+    echo "$output" | grep 'change working directory'
+    ! echo "$output" | grep 'cannot change directory'
 }
 
 @test "guess git root is the project root" {
@@ -44,25 +44,25 @@ teardown() {
     run cd_project_root
     popd
 
-    echo "$output" | command grep 'guess git repo root'
-    echo "$output" | command grep 'change working directory'
+    echo "$output" | grep 'guess git repo root'
+    echo "$output" | grep 'change working directory'
 }
 
 @test "guess current directory is the project root if not in git repo" {
     local project_root=
 
-    command rm -rf .git
+    rm -rf .git
     mkdir -p x/y/z
     pushd x/y/z
     run cd_project_root
     popd
 
-    echo "$output" | command grep 'guess current directory'
-    ! echo "$output" | command grep 'change working directory'
+    echo "$output" | grep 'guess current directory'
+    ! echo "$output" | grep 'change working directory'
 }
 
 @test "do not add .gitignore if not in git repo" {
-    command rm -rf .git
+    rm -rf .git
     run add_gitignore
     [ "$status" -eq 0 ]
     [ ! -e .gitignore ]
@@ -73,29 +73,29 @@ teardown() {
     run add_gitignore
     popd
     [ "$status" -eq 0 ]
-    echo "$output" | command grep "added .gitignore"
-    command cat .gitignore | command grep .direnv
-    command cat .gitignore | command grep result
+    echo "$output" | grep "added .gitignore"
+    cat .gitignore | grep .direnv
+    cat .gitignore | grep result
 }
 
 @test "do not append lines to .gitignore if .gitignore contains the lines" {
-    command cat > .gitignore <<EOF
+    cat > .gitignore <<EOF
 # Nix and direnv stuff
 .direnv
 result
 EOF
     run add_gitignore
     [ "$status" -eq 0 ]
-    ! echo "$output" | command grep "appended lines to .gitignore"
-    command cat .gitignore | command grep "# Nix and direnv stuff"
+    ! echo "$output" | grep "appended lines to .gitignore"
+    cat .gitignore | grep "# Nix and direnv stuff"
 }
 
 @test "append lines to .gitignore if .gitignore exists" {
     echo "pen pineapple" > .gitignore
     run add_gitignore
     [ "$status" -eq 0 ]
-    echo "$output" | command grep "appended lines to .gitignore"
-    command cat .gitignore | command grep 'pen pineapple'
-    command cat .gitignore | command grep .direnv
-    command cat .gitignore | command grep result
+    echo "$output" | grep "appended lines to .gitignore"
+    cat .gitignore | grep 'pen pineapple'
+    cat .gitignore | grep .direnv
+    cat .gitignore | grep result
 }

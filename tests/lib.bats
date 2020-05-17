@@ -9,16 +9,16 @@ set -euo pipefail
     local in_usage in_help
 
     in_usage="$(show_usage \
-               | command sed 's_\(xify\|\]\) _\1\n_g' \
-               | command sed -e '/^\[/!d' -e 's/ \[-/\n[-/' \
-               | command sed -e 's_^\[\(.*\)\]$_\1_' -e 's_^\[__' \
-               | command awk '{ print $1 }' \
-               | command sort
+               | sed 's_\(xify\|\]\) _\1\n_g' \
+               | sed -e '/^\[/!d' -e 's/ \[-/\n[-/' \
+               | sed -e 's_^\[\(.*\)\]$_\1_' -e 's_^\[__' \
+               | awk '{ print $1 }' \
+               | sort
                )"
     in_help="$(show_help \
-              | command sed -e '/^ /!d' -e 's_, _|_' \
-              | command awk '{ print $1 }' \
-              | command sort
+              | sed -e '/^ /!d' -e 's_, _|_' \
+              | awk '{ print $1 }' \
+              | sort
               )"
 
     [ "$in_usage" = "$in_help" ]
@@ -46,7 +46,7 @@ set -euo pipefail
     run prefetch_nixpkgs invalidrevhash
 
     [ ! "$status" -eq 0 ]
-    echo "$output" | command grep 'prefetching'
-    echo "$output" | command grep 'failed'
+    echo "$output" | grep 'prefetching'
+    echo "$output" | grep 'failed'
 }
 

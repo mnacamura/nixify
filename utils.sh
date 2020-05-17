@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 gitroot() {
-    command git rev-parse --show-toplevel 2> /dev/null
+    git rev-parse --show-toplevel 2> /dev/null
 }
 
 tildify() {
@@ -10,7 +10,7 @@ tildify() {
         return 1
     fi
 
-    echo "$1" | command sed "s|^$HOME|~|"
+    echo "$1" | sed "s|^$HOME|~|"
 }
 
 join() {

@@ -6,49 +6,49 @@ set -euo pipefail
 . "$BATS_TEST_DIRNAME/../lib.sh" >&2
 
 setup() {
-    tmpd="$(command mktemp -d --suffix "nixifytestdir")"
+    tmpd="$(mktemp -d --suffix "nixifytestdir")"
     pushd "$tmpd"
 }
 
 teardown() {
-    command rm -rf "$tmpd"
+    rm -rf "$tmpd"
 }
 
 @test "write text to a file" {
     run write_text "a.txt" "meow meow"
-    echo "$output" | command grep "added a.txt"
-    command grep "meow meow" a.txt
+    echo "$output" | grep "added a.txt"
+    grep "meow meow" a.txt
 }
 
 @test "back up before writing text to an existing file" {
     touch "b.txt" "b.txt~"
     run write_text "b.txt" "bow bow"
-    echo "$output" | command grep "renamed to b.txt~~"
-    echo "$output" | command grep "added b.txt"
-    command grep "bow bow" b.txt
+    echo "$output" | grep "renamed to b.txt~~"
+    echo "$output" | grep "added b.txt"
+    grep "bow bow" b.txt
     [ -e "b.txt~~" ]
 }
 
 @test "add .envrc" {
     run add_envrc
     [ "$status" -eq 0 ]
-    echo "$output" | command grep "added .envrc"
-    command grep "^use nix$" .envrc
+    echo "$output" | grep "added .envrc"
+    grep "^use nix$" .envrc
 }
 
 @test "append 'use nix' to existing .envrc" {
     echo hello > .envrc
     run add_envrc
     [ "$status" -eq 0 ]
-    echo "$output" | command grep "appended 'use nix' to .envrc"
-    command grep "hello" .envrc
-    command grep "^use nix$" .envrc
+    echo "$output" | grep "appended 'use nix' to .envrc"
+    grep "hello" .envrc
+    grep "^use nix$" .envrc
 }
 
 @test "do not append 'use nix' if .envrc contains it" {
     echo 'use nix' > .envrc
     run add_envrc
     [ "$status" -eq 0 ]
-    ! echo "$output" | command grep "appended 'use nix' to .envrc"
-    command grep "^use nix$" .envrc
+    ! echo "$output" | grep "appended 'use nix' to .envrc"
+    grep "^use nix$" .envrc
 }
