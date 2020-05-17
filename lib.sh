@@ -52,9 +52,16 @@ show_version() {
 }
 
 # 96: bright cyan, 94: bright blue
-nixify_color=96
+# 93: bright yellow, 95: bright magenta
+if (( (RANDOM % 100) < 1 )); then
+    nixify_color=93
+else
+    nixify_color=96
+fi
 toggle_nixify_color() {
     case "$nixify_color" in
+        93) nixify_color=95;;
+        95) nixify_color=93;;
         94) nixify_color=96;;
         96) nixify_color=94;;
         *) return 1;;
