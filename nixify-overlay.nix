@@ -27,7 +27,7 @@ in
 {
   nixify-unstable = self.callPackage ./pkg.nix {};
 
-  nixify = self.nixify_0_3_1;
+  nixify = self.nixify_0_2_1;
 
   nixify_0_3_1 = makeRelease {
     version = "0.3.1";

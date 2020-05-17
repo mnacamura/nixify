@@ -21,13 +21,13 @@
 
 - Ability to specify installation destination
 
-## [0.3.1](https://github.com/mnacamura/nixify/tree/0.3.1) (2020-05-16)
+## [0.3.1](https://github.com/mnacamura/nixify/tree/0.3.1) (2020-05-16) **[BROKEN]**
 
 ### Fixed
 
 - Spacing after comma in `pkg.nix`'s header
 
-## [0.3](https://github.com/mnacamura/nixify/tree/0.3) (2020-05-16)
+## [0.3](https://github.com/mnacamura/nixify/tree/0.3) (2020-05-16) **[BROKEN]**
 
 ### Changed
 
