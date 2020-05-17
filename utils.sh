@@ -32,14 +32,13 @@ contains() {
     local it="$1"
     shift
 
-    local item has_it=
+    local item
     for item in "$@"; do
         if [ "$it" = "$item" ]; then
-            has_it=yes
-            break
+            return
         fi
     done
-    test -n "$has_it"
+    return 1
 }
 
 unique() {
