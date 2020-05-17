@@ -13,6 +13,10 @@
 
 ## Unstable version
 
+### Fixed
+
+- Program stops by an error with message `$2: unbound variable`
+
 ### Added
 
 - Ability to specify installation destination
