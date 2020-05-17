@@ -10,17 +10,13 @@ set -euo pipefail
 
     in_usage="$(show_usage \
                | command sed 's_\(xify\|\]\) _\1\n_g' \
-               | command sed '/^\[/!d' \
-               | command sed 's_^\[\(.\+\)\]$_\1_' \
-               | command sed 's_\[_\n[_' \
-               | command sed 's_^\[\(.\+\)\]$_\1_' \
-               | command sed '/^\(-\|DEST\)/!d' \
+               | command sed -e '/^\[/!d' -e 's/ \[-/\n[-/' \
+               | command sed -e 's_^\[\(.*\)\]$_\1_' -e 's_^\[__' \
                | command awk '{ print $1 }' \
                | command sort
                )"
     in_help="$(show_help \
-              | command sed '/^ *\(-\|DEST\)/!d' \
-              | command sed 's_, -_|-_' \
+              | command sed -e '/^ /!d' -e 's_, _|_' \
               | command awk '{ print $1 }' \
               | command sort
               )"
