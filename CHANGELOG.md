@@ -8,6 +8,9 @@
 
 ## Unstable version
 
+
+## [0.4](https://github.com/mnacamura/nixify/tree/0.4) (2020-05-18)
+
 ### Fixed
 
 - Program stops by an error with message `$2: unbound variable`
