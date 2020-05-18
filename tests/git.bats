@@ -16,12 +16,14 @@ teardown() {
 }
 
 @test "ok if git root found" {
-    gitroot
+    run gitroot
+    [ "$status" -eq 0 ]
 }
 
 @test "fail if git root not found" {
     rm -rf .git
-    ! gitroot
+    run gitroot
+    [ ! "$status" -eq 0 ]
 }
 
 @test "no guess if dest is specified" {
@@ -30,6 +32,7 @@ teardown() {
     mkdir -p x/y/z
     run cd_project_root
 
+    [ "$status" -eq 0 ]
     ! echo "$output" | grep 'guess current directory'
     ! echo "$output" | grep 'guess git repo root'
     echo "$output" | grep 'change working directory'
@@ -44,6 +47,7 @@ teardown() {
     run cd_project_root
     popd
 
+    [ "$status" -eq 0 ]
     echo "$output" | grep 'guess git repo root'
     echo "$output" | grep 'change working directory'
 }
@@ -57,6 +61,7 @@ teardown() {
     run cd_project_root
     popd
 
+    [ "$status" -eq 0 ]
     echo "$output" | grep 'guess current directory'
     ! echo "$output" | grep 'change working directory'
 }

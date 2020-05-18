@@ -16,6 +16,7 @@ teardown() {
 
 @test "write text to a file" {
     run write_text "a.txt" "meow meow"
+    [ "$status" -eq 0 ]
     echo "$output" | grep "added a.txt"
     grep "meow meow" a.txt
 }
@@ -23,6 +24,7 @@ teardown() {
 @test "back up before writing text to an existing file" {
     touch "b.txt" "b.txt~"
     run write_text "b.txt" "bow bow"
+    [ "$status" -eq 0 ]
     echo "$output" | grep "renamed to b.txt~~"
     echo "$output" | grep "added b.txt"
     grep "bow bow" b.txt
