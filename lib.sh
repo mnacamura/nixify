@@ -232,7 +232,7 @@ cd_project_root() {
     if [ "$project_root" != "$PWD" ]; then
         msg "change working directory to $(tildify "$project_root")"
         if ! cd "$project_root"; then
-            err "cannot change directory to $project_root"
+            err "couldn't change directory to $project_root"
         fi
     fi
 }
@@ -249,12 +249,18 @@ write_text() {
         while [ -e "$name$bk" ]; do
             bk="$bk$bk"
         done
-        warn "$name exists; renamed to $name$bk"
-        mv "$name" "$name$bk"
+        if mv "$name" "$name$bk"; then
+            warn "$name exists; renamed to $name$bk"
+        else
+            err "couldn't rename $name to $name$bk"
+        fi
     fi
 
-    echo -n "$contents" > "$name"
-    msg "added $name"
+    if echo -n "$contents" > "$name"; then
+        msg "added $name"
+    else
+        err "couldn't add $name"
+    fi
 }
 
 add_gitignore() {
@@ -277,35 +283,49 @@ add_gitignore() {
     }
 
     if [ ! -e "$gitignore" ]; then
-        echo "$comment_line" > "$gitignore"
-        __append_lines_to "$gitignore"
-        msg "added .gitignore"
-        return
+        if echo "$comment_line" > "$gitignore" \
+           && __append_lines_to "$gitignore"
+        then
+            msg "added .gitignore"
+            return
+        else
+            err "couldn't add .gitignore"
+        fi
     fi
 
     if grep "$comment_line" "$gitignore" > /dev/null 2>&1; then
         return
     fi
 
-    echo >> "$gitignore"
-    echo "$comment_line" >> "$gitignore"
-    __append_lines_to "$gitignore"
-    msg "appended lines to .gitignore"
+    if echo >> "$gitignore" \
+       && echo "$comment_line" >> "$gitignore" \
+       && __append_lines_to "$gitignore"
+    then
+        msg "appended lines to .gitignore"
+    else
+        err "couldn't append lines to .gitignore"
+    fi
 }
 
 add_envrc() {
     if [ ! -e .envrc ]; then
-        echo "use nix" > .envrc
-        msg "added .envrc"
-        return
+        if echo "use nix" > .envrc; then
+            msg "added .envrc"
+            return
+        else
+            err "couldn't add .envrc"
+        fi
     fi
 
     if grep '^use nix$' .envrc > /dev/null 2>&1; then
         return
     fi
 
-    echo "use nix" >> .envrc
-    msg "appended 'use nix' to .envrc"
+    if echo "use nix" >> .envrc; then
+        msg "appended 'use nix' to .envrc"
+    else
+        err "couldn't append 'use nix' to .envrc"
+    fi
 }
 
 direnv_allow() {
