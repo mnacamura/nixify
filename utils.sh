@@ -9,17 +9,16 @@ tildify() {
         echo "$1"
         return 1
     fi
-
     echo "$1" | sed "s|^$HOME|~|"
 }
 
 strjoin() {
-    local sep="$1" result="${2-}"
-    shift 2
-
-    if [ -z "$result" ]; then
+    local sep="$1" result
+    if [ -z "${2+defined}" ]; then
         return
     fi
+    result="$2"
+    shift 2
 
     local item
     for item in "$@"; do
@@ -48,5 +47,5 @@ unique() {
             coll+=("$item")
         fi
     done
-    echo "${coll[*]}"
+    echo "${coll[@]}"
 }

@@ -11,33 +11,77 @@ teardown() {
     set +uo pipefail
 }
 
-@test "abbreviate \$HOME by ~" {
+@test "tildify fails with no argument" {
+    run tildify
+    [ ! "$status" -eq 0 ]
+}
+
+@test "tildify ignores other than the first argument" {
     local HOME=/home/hoge
-    [ "$(tildify "$HOME/huga/")" = '~/huga/' ]
+    [ "$(tildify $HOME/{huga,hoge})" = '~/huga' ]
 }
 
-@test "do not abbreviate \$HOME inside path" {
+@test "tildify abbreviates \$HOME by ~" {
     local HOME=/home/hoge
-    [ "$(tildify "/opt$HOME/huga/")" = /opt/home/hoge/huga/ ]
+    [ "$(tildify $HOME/huga/)" = '~/huga/' ]
 }
 
-@test "join no items to empty" {
-    # Below somehow passes even with 'set -u'
-    # [ -z "$(strjoin separator)" ]
-    local result
-    result="$(strjoin separator)"
-    [ -z "$result" ]
+@test "tildify does not abbreviate \$HOME inside path" {
+    local HOME=/home/hoge
+    [ "$(tildify /opt$HOME/huga/)" = /opt/home/hoge/huga/ ]
 }
 
-@test "join items by a separator of length more than one" {
+@test "strjoin with no separator fails" {
+    run strjoin
+    [ ! "$status" -eq 0 ]
+}
+
+@test "strjoin with no items does not fail" {
+    run strjoin sep
+    [ "$status" -eq 0 ]
+}
+
+@test "strjoin with no items returns empty" {
+    [ -z "$(strjoin separator)" ]
+}
+
+@test "strjoin handles a lengthy separator" {
    [ "$(strjoin 'aha' pen pineapple apple pen)" = "penahapineappleahaappleahapen" ]
 }
 
-@test "contains pen, doesn't contain apple pen" {
-    contains pen pineapple apple pen
-    ! contains 'apple pen' pineapple apple pen
+@test "strjoin handles empty strings as well" {
+    [ "$(strjoin meow '' '_' '')" = "meow_meow" ]
 }
 
-@test "items are different from each other" {
+@test "contains with no argument fails" {
+    run contains
+    [ ! "$status" -eq 0 ]
+}
+
+@test "contains with one argument fails" {
+    run contains it
+    [ ! "$status" -eq 0 ]
+}
+
+@test "contains pen" {
+    run contains pen pineapple apple pen
+    [ "$status" -eq 0 ]
+}
+
+@test "doesn't contain apple pen" {
+    run contains 'apple pen' pineapple apple pen
+    [ ! "$status" -eq 0 ]
+}
+
+@test "unique with no arguments does not fail" {
+    run unique
+    [ "$status" -eq 0 ]
+}
+
+@test "unique with no arguments produces empty" {
+    [ -z "$(unique)" ]
+}
+
+@test "uniqued items are different from each other" {
     [ "$(unique a a b b c d a a d b d c)" = "a b c d" ]
 }
