@@ -247,7 +247,7 @@ write_text() {
     if [ -e "$name" ]; then
         local bk='~'
         while [ -e "$name$bk" ]; do
-            bk="$bk$bk"
+            bk="$bk~"
         done
         if mv "$name" "$name$bk"; then
             warn "$name exists; renamed to $name$bk"
