@@ -5,11 +5,6 @@
 - Add integration tests
 - Add shell completions (fish, bash, zsh)
 - Enable to use custom templates?
-- Revert to initial state after aborting:
-    1. First, install files to a temporal directory.
-    2. If everything is OK, install the files in the temporal directory to the
-       project directory.
-    3. Otherwise, remove the temporal directory and exit.
 
 ## Unstable version
 
