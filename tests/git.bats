@@ -7,7 +7,7 @@ setup() {
     set -uo pipefail
     tmpd="$(mktemp -d --suffix "nixifytestgit")"
     pushd "$tmpd" \
-    && git init
+    && git init || return 1
 }
 
 teardown() {
@@ -79,8 +79,8 @@ teardown() {
     popd
     [ "$status" -eq 0 ]
     echo "$output" | grep "added .gitignore"
-    cat .gitignore | grep .direnv
-    cat .gitignore | grep result
+    grep .direnv .gitignore
+    grep result .gitignore
 }
 
 @test "do not append lines to .gitignore if .gitignore contains the lines" {
@@ -92,7 +92,7 @@ EOF
     run add_gitignore
     [ "$status" -eq 0 ]
     ! echo "$output" | grep "appended lines to .gitignore"
-    cat .gitignore | grep "# Nix and direnv stuff"
+    grep "# Nix and direnv stuff" .gitignore
 }
 
 @test "append lines to .gitignore if .gitignore exists" {
@@ -100,7 +100,7 @@ EOF
     run add_gitignore
     [ "$status" -eq 0 ]
     echo "$output" | grep "appended lines to .gitignore"
-    cat .gitignore | grep 'pen pineapple'
-    cat .gitignore | grep .direnv
-    cat .gitignore | grep result
+    grep 'pen pineapple' .gitignore
+    grep .direnv .gitignore
+    grep result .gitignore
 }

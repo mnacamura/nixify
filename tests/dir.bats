@@ -6,7 +6,7 @@
 setup() {
     set -uo pipefail
     tmpd="$(mktemp -d --suffix "nixifytestdir")"
-    pushd "$tmpd"
+    pushd "$tmpd" || return 1
 }
 
 teardown() {
