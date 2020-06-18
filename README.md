@@ -7,7 +7,7 @@ precedents.
 
 ## Example 
 
-<img src=./example.png width=650 alt="Running example" />
+![Running example](./example.png)
 
 ## Usage
 
